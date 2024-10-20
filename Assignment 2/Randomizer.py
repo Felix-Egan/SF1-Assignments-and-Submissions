@@ -41,8 +41,6 @@ def listRandom():
     list3.append(random.randint(0,100)/100)
   return list3
 
-
-
 def chartRandomNumbers(mid, lehmer, rand):
   '''
   This function draws a histogram of the three lists on the same plot
@@ -55,8 +53,6 @@ def chartRandomNumbers(mid, lehmer, rand):
   plt.legend(prop={'size': 10})
   plt.show()
   
-
-
 def main():
   start = 29 # I recommend seed = 83 since it yields a more diverse output
   list1 = listMiddleSquare(start)
