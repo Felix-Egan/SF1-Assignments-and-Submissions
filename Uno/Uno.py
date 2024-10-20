@@ -124,8 +124,9 @@ def play_round(player_hand, face_up, draw_pile, current_player):
         for card in player_hand:
             print(f"{player_hand.index(card) + 1}: {card[0]} {card[1]}")
         chosen_index = int(input("Card index: ")) - 1
-        chosen_card = player_hand.pop(chosen_index)
+        chosen_card = player_hand[chosen_index]
         if valid_play(chosen_card, face_up):
+            player_hand.pop(chosen_index)
             face_up = chosen_card
             print(f"You play the {chosen_card}")
             if   chosen_card[0] == "Wild Color Change": face_up = change_color(face_up)
