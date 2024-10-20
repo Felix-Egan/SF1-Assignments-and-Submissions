@@ -35,7 +35,7 @@ def reverse_card():
     print("The order of play is now reversed!")
 
 def skip_card():
-    pass                           #CHANGE THIS
+    current = ((current - 1) % num_players) if reverse_play else ((current + 1) % num_players)
 
 def opponent_draw_card(player_hand, draw_pile, card_draw_count):  
     for i in range(card_draw_count):
