@@ -78,6 +78,7 @@ def refresh_draw_pile(face_up_pile, draw_pile):
         for card in face_up_pile: draw_pile.append(card)
         face_up_pile = []
         print("All cards in the Face Up pile have been reshuffled into the draw_pile.")
+    return [draw_pile, face_up_pile]
 
 # Color changing 
 def change_color(face_up):
@@ -148,7 +149,9 @@ def manage_UNO_players(player_hands):
 # Main Game Loop
 def main_loop(player_hands, face_up, draw_pile, face_up_pile, num_players, current_player):
     while all(player_hands):
-        refresh_draw_pile(face_up_pile, draw_pile)
+        refresh_result = refresh_draw_pile(face_up_pile, draw_pile)
+        draw_pile = refresh_result[0]
+        face_up_pile = refresh_result[1]
         manage_UNO_players(player_hands)
         player_card_count = [f"Player{i+1}: {len(player_hands[i])} [{'UNO!' if f'Player{i+1}' in players_called_UNO else ''}]" for i in range(num_players)]
         print(player_card_count)
