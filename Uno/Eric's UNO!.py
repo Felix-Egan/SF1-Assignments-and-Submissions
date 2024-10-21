@@ -71,6 +71,27 @@ def start_game():
 def valid_play(card, face_up):
     return card[1] == face_up[1] or card[0] == face_up[0] or card[1] == "Black"
 
+# _________________________________________________________________________________________________________
+# Player 2 AI if num_players == 1
+def ai_player_2(player_hand, face_up, draw_pile, current_player):
+    valid_cards = [card for card in player_hand if valid_play(card, face_up)]
+    if not valid_cards:
+        print(f"Player {current_player + 1} has no valid cards in their hand: {player_hand}")
+        draw_card(player_hand, face_up, draw_pile, current_player)
+    else:
+        chosen_card = random.choice(valid_cards)
+        player_hand.remove(chosen_card)
+        face_up = chosen_card
+        face_up_pile.append(face_up)
+        print(f"Player {current_player + 1} plays the {chosen_card}")
+        if   chosen_card[0] == "Wild Color Change": face_up = change_color(face_up)
+        elif chosen_card[0] == "Wild Draw Four":  face_up = draw_four_color_change_card(current_player, draw_pile, face_up)
+        elif chosen_card[0] == "Reverse": reverse_card()
+        elif chosen_card[0] == "Skip": current_player = skip_card(current_player)
+        elif chosen_card[0] == "+2": opponent_draw_card(player_hands, current_player, draw_pile, 2)
+    return [face_up, current_player]
+# _________________________________________________________________________________________________________
+
 # Refresh draw_pile 
 def refresh_draw_pile(face_up_pile, draw_pile):
     if not draw_pile:
