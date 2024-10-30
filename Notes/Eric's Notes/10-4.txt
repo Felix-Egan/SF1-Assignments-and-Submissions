@@ -1,0 +1,109 @@
+10-4: loops
+===========
+
+All code can be broken down into 2 kinds of code:
+
+1. Expressions
+	code the computes down to something, it simplified. This about DATA
+	For example, 
+		5 + 5 =>
+		len("hi") % 2 == 0 => 
+
+2. Statements
+	code doesn't compute, it DOES something
+	include: I/O, control flow of execution
+
+Statements we know:
+print() -> print statements print to stdout
+input() -> statement that gets input from stdin
+
+Statements for control flow:
+these are things that may include expressions, but ultimately they control where the flow of execution is. 
+
+functions -> JUMPS in the code.
+	     function calls JUMP to where the 	     function is defined
+	     return (stmt) goes BACK to where              	     the call came from
+
+consider:
+
+1 print("hi")
+2 name = input("gimme your name")
+3 greeting(name)
+4 print("goodbye")
+5 
+6 def greeting(name):
+7 	print(f"hi {name}")
+8       return "" 
+9
+
+The lines that execute in order are:
+1, 2, 3 (JUMPS), 6, 7, 8 (RETURNS), 4
+
+
+if 	-> BRANCHES in the code
+
+
+1 x = 4
+2 if x%2 == 0
+3 	print("even")
+4 else:
+5	print("odd")
+
+
+for and while loops
+===================
+
+the last main way programmers can control the flow of execution
+
+what these statements do is allow us to run the same chunk of code over and over, often with small tweeks
+
+>>> for x in [1, 2, 3, 4, 5]:
+...     print("hello!")
+...     print(f"the value of x is {x}")
+
+What really is happening is something like this:
+
+   	x = 1
+...     print("hello!")
+...     print(f"the value of x is {x}")
+
+	x = 2
+...     print("hello!")
+...     print(f"the value of x is {x}")
+
+	x = 3
+...     print("hello!")
+...     print(f"the value of x is {x}")
+
+	x = 4
+...     print("hello!")
+...     print(f"the value of x is {x}")
+
+	x = 5
+...     print("hello!")
+...     print(f"the value of x is {x}")
+
+
+Thanks python! 
+
+Range function
+==============
+
+Becuase we need lists to use the for ___ in _______ construct, writing a list in the second blank by hand is really slow. Imagine 100 elements. 
+
+So we use a function that helps us make lists of numbers, range(). Range has three ways to be called:
+
+range(n) => return a list starting at 0, going up by 1, until n
+
+range(start, stop) => return a list starting at start, up to stop, incrementing by one
+
+range(start, stop, step) => returns a list starting at start, up to stop, going up by step increments. 
+
+Very often, we see this pattern:
+
+for x in range(10):
+for x in range(10, 100):
+for x in <some list>:
+
+
+

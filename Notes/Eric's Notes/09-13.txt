@@ -1,0 +1,96 @@
+09-13 
+Lists
+=====
+
+Lists help us organize data in a structure.
+
+To structure something is to give it shape, like a beginning, and end
+
+So far we've only talked about individual pieces of data in one variable at time. Lists are like a mega variable that can hold many values.
+
+le syntax
+---------
+
+lists are denoted with an opening and closing SQUARE bracket. [] 
+
+items (or elements) in a list are COMMA SEPARATED
+
+l = [4, 5, 6, 7]
+
+indexing
+--------
+
+All elements in a list have an index, their position
+
+We can pull (or update) any single value in a list using its index
+
+l = [4, 5, 6, 7]
+     0  1  2  3  <- Indeces
+    -4 -3 -2 -1  <- also indeces
+
+NOTE: lists start counting at 0
+NOTE: in python, you can index in reverse! This is from right to left
+
+Syntax to pull a single value
+-----------------------------
+
+l[<index to pull from>]
+ex. l[1] => 5
+
+syntax to update an index
+-------------------------
+
+l[0] = -99
+Now l looks like:
+[-99, 5, 6, 7]
+
+Other operations and functions:
+-------------------------------
+
+- length: len(l) -> returns the number of elements in the list, ex. 4
+
+- append(): l.append(4). -> this adds to the end of the list
+
+- remove(): l.remove(4) -> it finds an element in the list with that value and removes it!
+
+slicing 
+-------
+
+we can get sublists from a list, or a smaller version, by slicing
+
+the syntax is
+l[_:_]
+
+On the left _, we put the lower bound of the sublist INCLUSIVE
+
+When I omit the left number, what happens is a 0 is places there implicitly
+
+On the right _, we put the upper bound of the sublist EXCLUSIVE (aka "up to but not including")
+
+When I omit the right number, it implicitly takes to the end of the list
+
+One more thing...
+-----------------
+Surprise! Strings are lists, lists of characters
+
+
+HOMEWORK:
+=========
+
+codingbat.com/python
+
+give me 2 solutions from:
+- Logic-1
+- String-1
+- List-1
+
+CANNOT be one we've done in class
+REMEMBER: challenge thyself
+
+screenshots in a word doc
+
+
+
+
+
+

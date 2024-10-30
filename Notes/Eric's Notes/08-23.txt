@@ -1,0 +1,46 @@
+- SF1, Aug 23
+- Topics: 
+	- What is a programming lang (PL)?
+	- What is python? 
+	- Basics of Python
+--------------------------------------------------------
+- What is PL?
+	- computer speak
+	- the opposite of a "natural" lang, or "human" lang
+	- same: syntax and grammar
+	- PL is very rigid. One wrong move, and its all over -> bugs and errors
+	- EVERY software is made via a PL
+	- there are TONS of PL
+		- Java, JavaScript, Lua, C++, C#, C, Assembly/Machine Language (binary)
+	- 2 kinds of PLs:
+		We must turn ANY PL into binary. How?
+		1. Compiled
+			Uses a COMPILER to output a new program in binary
+			INPUT: a program in the given PL (a file, "myprogram.java")
+			OUTPUT: executable, a new program that is in binary	
+			PLs that use compilers: Java, C, C++, C#, 
+		2. Interpreted  
+			Reads each line of the program one at a time
+			And turns each line, one at a time, into binary
+			PLs that are interpreted: Python, JS, Java
+		Questions:
+			How are compiled and interpreted processes different?
+			Will compiling run a program? Will interpeting run a program?
+			Why would you use one over the other? What are the advantages of either?
+---------------------------------------------------------
+
+What is Python
+
+- Free and Open Source Software (FOSS, FLOSS)
+	- Its always going to be free
+	- ANYONE can look at the source code, ANYONE can contribute :) 
+	- Constrast with: closed source, proprietary software, like MS, 
+	- Python FOSS but its also a company
+
+- Python has versions!!
+	- updated over the years
+	- started with python v1, v2 2000s, v3 today. Difference is HUGE. Be careful
+
+- Python has a TON of applications!
+	- Science, data science, in industry, AI, health studies
+	- Big pros: easier, syntax isn't so bad. 

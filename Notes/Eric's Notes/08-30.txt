@@ -1,0 +1,173 @@
+08-30: More types and functions
+-------------------------------
+
+Review:
+	Type -> the kinds of data, groupings 
+	Values -> "constant literals", just data
+
+2 new data types: Strings and booleans
+======================================
+
+Strings
+-------
+- Strings: textual data, 
+	ex. "eric" , "sf 1",
+- Motivation for types:
+	- consider this operator: `+`
+	- Types help inform the computer how the data should be dealt with
+	- >>> 1 + 1 => 2
+	- >>> "1" + "1" => "11" (concatenation)
+
+Booleans
+--------
+- Simple type, it has 2 values: 
+	- True or False!
+- `bool` for short
+- Come with a ton of new operations!
+	- AND, OR, NOT, XOR, XAND, NOR... 
+	- Other new ("logical") operatons:
+		- `==` equality
+		- `!=` inequality
+		- comparisons: <, >, <=, >=
+
+Revised OOO
+-----------
+1. Substitution
+2. PEDMAS
+3. Logical operators (==, !=, <, >, or, and,...)
+4. Var assignment
+
+Practice Traces:
+----------------
+1.
+x = 4
+y = False
+z = "hi"
+
+a = 4 + 4 > x == y => a = 4 + 4 > 4 == False
+=> a = 8 > 4 == False
+=> a = True == False
+=> a = False
+
+
+2. 
+s = "hi"
+evaluate: s != s + s != True 
+=> "hi" != "hi" + "hi" != True
+=> "hi" != "hihi" != True
+=> "hi" != True
+=> True ???? Python makes no sense
+
+=== not ("hi" == "hihi") != True
+=> not (False) != True
+=> True != True
+=> False
+
+-------------
+3.
+s = "py"
+x = 3
+len(s) >= 2 and (x != x or False)
+=> len("py") >= 2 and (3 != 3 or False)
+=> 2 >= 2 and (False or False)
+=> 2 >= 2 and (False)
+=> True and False
+=> False
+
+Some notes on conversion
+------------------------
+
+Bool -> int
+	Bools have int representations
+	False = 0
+	True = 1
+	All other numbers map to 1. 
+
+Int -> String
+	Use the `str()` function
+
+String -> int
+	If it's a number (like "10"...)
+	int("10") -> 10 : int
+
+
+Functions
+=========
+
+Start with math
+
+Function definition:
+	f(x) = 2 * x + 4
+	g(x) = x + x
+        ^ ^    ^
+name----| |    |
+inputs ---|    |
+body ----------|
+
+Call the function:
+	f(5)
+To call, use name and provide ARGUMENTS
+Above, we call function f with args 5
+
+When a function runs, it does a subs
+
+f(5) this really means
+var assignment -> x = 5
+body -> 2*x + 4
+
+More complex example:
+	Definition:
+	h(x, y) = x + y
+	h(a, b) = a + b
+
+	Calling:
+	h(1, 2) => x + y where x = 1, y=2
+		=> 1 + 2
+	versus...
+	h(2, 1) => 2 + 1
+
+In Python syntax:
+
+def addition(x, y):   <- HEADER
+	return x + y  <- BODY
+
+Consider:
+---------
+You can functions with no input.
+ex.
+
+def fun():
+	return 2
+
+You can take in as many args as you want
+
+def fun1(a, b, c, d, e, f...):
+	return a
+
+Not all functions need to return
+
+def print_greet(name):
+	print("hi " + name)
+
+Type annotations in Python
+--------------------------
+In this course, I'm requiring all functions have type annotations. This means giving the type of ALL inputs (var_name: int) and the output of the function (-> int)
+
+	input   input   -> output type
+	type	type		
+def add(x: int, y: int) -> int:
+	return a + b
+
+Type defintion of a function
+----------------------------
+
+We can look at a function purely in terms of input types and output type
+
+add: int -> int -> int
+
+This says add takes in 2 ints and returns an int
+The last type in the type definition is the return type. 
+
+
+
+

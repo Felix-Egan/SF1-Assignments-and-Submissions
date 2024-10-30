@@ -1,0 +1,77 @@
+
+In these notes:
+- Review of Py as a calculator, order of operations
+- Discussion of types, like float
+	- determining the type and value of a piece of data
+	- converting ints and floats
+- Strings
+
+Review: python as a calculator with memory
+==========================================
+
+>>> 3 + 3
+> 6
+
+OOO (Order of operations when evaluating)
+
+1. Substitution
+2. PEDMAS
+3. variable assignment
+					     var    value
+x = 4						x   4
+y = x + x => (4) + (4) => y = 8			y   8  	
+
+
+New types: floats and strings
+=============================
+
+# Consider: calculators have decimal numbers
+# So does python
+
+>>> 4.0 + 4.0
+> 8.0
+
+Float is a `type`. All data in a computer has two elements: the type and the value
+
+Ex. value: 8, 8.0, 0, -1000, -1.111111, infinite possibilities!
+Ex. Type: float, int, finite possibilities!
+
+To see the VALUE of a piece of data in a program, we use the `print` function
+To see the TYPE of a piece of data, we use the `type` function
+
+We can change a piece of data from one TYPE to another TYPE, usually. This is called CASTING
+
+int -> float  ex. 8 -> 8.0
+float -> int  ex. 8.0 -> 8. 
+	BE CAREFUL: we can lose data here!
+	CONSIDER: pi (float) to an int. Ex. 3.14159.... -> 3
+
+HOW to convert types
+--------------------
+
+Wanna do:    	| function
+int -> float 	| float(<your int goes here!>)    ex. float(3)
+float -> int    | int( <your float here> )        ex. int(3.0)
+
+New challenger: STRINGS
+=======================
+
+Obviously, python can do more than numbers. it can compute on TEXT
+
+STRING is the type of data that is text. String "string" together characters
+
+>>> x = "hello"
+>>> type(x)
+> string
+
+Type conversion:
+----------------
+
+int -> float
+float -> int
+int -> string??? how do you turn a number into text?
+string -> int??? how do you turn text into a number? what is the number for "a"?
+float -> string??
+string -> float??
+
+
