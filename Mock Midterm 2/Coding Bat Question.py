@@ -12,5 +12,3 @@ def remove_vowels(word: str) -> str:
             if letter in vowels_and_spaces:
                 result += letter
     return result
-
-print(remove_vowels(input("Remove Vowels if len<11 : ")))
