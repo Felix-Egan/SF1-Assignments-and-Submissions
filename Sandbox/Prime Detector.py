@@ -1,4 +1,5 @@
 n  = int(input("Prime Check: "))
+
 def is_prime(n):
     if n <= 1 or n % 2 == 0 or n % 3 == 0 or str(n)[-1] in "024568":
         return f"False: Negative, Even, Divisible by 2 or 3, or ends in 0, 2, 4, 6, 8"
@@ -10,4 +11,5 @@ def is_prime(n):
             return f"False: divisible by {i} or {i + 2}"
         i += 6
     return "True"
+
 print("Is Prime? ", is_prime(n))

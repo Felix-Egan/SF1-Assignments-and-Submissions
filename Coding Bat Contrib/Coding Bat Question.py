@@ -1,5 +1,3 @@
-# First Attempt Draft:
-
 # def remove_vowels(word: str) -> str:
 #     vowels = "aeiouyAEIOUY"
 #     vowels_and_spaces = vowels + " "
@@ -14,9 +12,6 @@
 #             if letter in vowels_and_spaces:
 #                 result += letter
 #     return result
-# ___________________________________________________________________________________________________
-
-# Final Submitted Function:
 
 def remove_vowels(word: str, y_is_a_vowel: bool) -> str:
     vowels = "aeiouAEIOU"
@@ -27,4 +22,5 @@ def remove_vowels(word: str, y_is_a_vowel: bool) -> str:
             result += letter
     return result
 
-# print(remove_vowels(input("Enter a word: "), True if input("Is 'y' a vowel? (y/N) (Default = Yes, because, it is. Why is this even a debate?): ") == "y" or "" else False))
+
+print(remove_vowels(input("Enter a word: "), True if input("Is 'y' a vowel? (y/N) (Default = Yes, because, it is. Why is this even a debate?): ") == "y" or "" else False))
