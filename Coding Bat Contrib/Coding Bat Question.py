@@ -23,4 +23,4 @@ def remove_vowels(word: str, y_is_a_vowel: bool) -> str:
     return result
 
 
-print(remove_vowels(input("Enter a word: "), True if input("Is 'y' a vowel? (y/N) (Default = Yes, because, it is. Why is this even a debate?): ") == "y" or "" else False))
+# print(remove_vowels(input("Enter a word: "), True if input("Is 'y' a vowel? (y/N) (Default = Yes, because, it is. Why is this even a debate?): ") == "y" or "" else False))
