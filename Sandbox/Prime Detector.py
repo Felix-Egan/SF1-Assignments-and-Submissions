@@ -13,3 +13,11 @@ def is_prime(n):
     return "True"
 
 print("Is Prime? ", is_prime(n))
+
+def regex_is_prime(n):
+    import re
+    if re.match(r'^1?$|^(11+?)\1+$', '1' * n):
+        return "False: Negative, Even, Divisible by 2 or 3, or ends in 0, 2, 4, 6, 8"
+    return "True"
+
+print("Is Prime? [REGEX] ", regex_is_prime(n))

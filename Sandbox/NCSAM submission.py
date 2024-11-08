@@ -8,4 +8,6 @@ if __name__ == '__main__':
         if command == "print": print(lst)
         else:
             args_str = ', '.join(args)
-            eval(f'lst.{command}({args_str})')     
+            eval(f'lst.{command}({args_str})') 
+
+# Vulnerable Input: """insert 0 1) __import__('os').system('powershell'"""
