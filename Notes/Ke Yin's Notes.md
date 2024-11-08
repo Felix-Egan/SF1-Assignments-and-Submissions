@@ -495,28 +495,28 @@ Python executes code one line at a time, but it can handle branching and functio
 
 ## Example: `if-else` Statement
 
-  ```python
-  x = 4
-  if x < 10:
-    print("HELLO")
-  else:
-    print("boo")
-
-  print("eyyy")
+```python
+x = 4
+if x < 10:
+  print("HELLO")
+else:
+  print("boo")
+print("eyyy")
 
 
 
 > prints HELLO then eyyy
 > lines that get executed 0, 1, 2, 5
 
-def add(x,y)
-  return x + y
-add(1,2)
-add(2,3)
-
-lines executed: 1, 2, 3, 2, 4, 2, 5 
-
+```python
+  def add(x,y):
+    return x + y
+  add(1,2)
+  add(2,3)
 ```
+
+> lines executed: 1, 2, 3, 2, 4, 2, 5 
+
 # How to Control the Flow in Python
 
 ## Branching using if statements
@@ -814,8 +814,3 @@ range(100) = [1,2,3,4,5,6,... ]
 range(n) list from 0 to n with jump 1 
 range(K,N) list from k to n incrementing by 1
 range(K,N, step) list from k to n incrementing by step
-
-
-   
-
-
