@@ -10,50 +10,56 @@ def flatten_list(lst):
     return result
 
 print(flatten_list(input('list:')))
-# Test cases in JSON format
+
+
 # [
 #     {
-#         "input": [1, [2, [[[3]]], [4, 5]], 6],
+#         "input": [[1, [2, [[[3]]], [4, 5]], 6]],
 #         "output": [1, 2, 3, 4, 5, 6]
 #     },
 #     {
-#         "input": [1, [2, [("wait", "this", "is", "a", "tuple"), [4, [5]]]]],
-#         "output": [1, 2, ("wait", "this", "is", "a", "tuple"), 4, 5]
+#         "input": [[1, [2, [{"wait":"a second", "this":"is", "a":"Dictionary"}, [4, [5]]]]]],
+#         "output": [1, 2, {"wait":"a second", "this":"is", "a":"Dictionary"}, 4, 5]
 #     },
 #     {
-#         "input": [1, "a", [2, "b", [3, "c"]]],
+#         "input": [[1, [2, 3], {"Dictionary-ception":{"Dictionary":"Inside", "Another":"Dictionary"}}, [[[[4]]]]]],
+#         "output": [1, 2, 3, {"Dictionary-ception":{"Dictionary":"Inside", "Another":"Dictionary"}}, 4]
+#     },
+#     {
+#         "input": [[1, "a", [2, "b", [3, "c"]]]],
 #         "output": [1, "a", 2, "b", 3, "c"]
 #     },
 #     {
-#         "input": [],
+#         "input": [[]],
 #         "output": []
 #     },
 #     {
-#         "input": [()],
-#         "output": [()]
+#         "input": [[{}]],
+#         "output": [{}]
 #     },
 #     {
-#         "input": [[[[[([])]]]]],
-#         "output": [([])]
+#         "input": [[[[[[{}, {}], {}], {}], {}], {}]],
+#         "output": [{}, {}, {}, {}, {}, {}]
 #     },
 #     {
-#         "input": [[[[[[[[[[10], 9], 8], 7], 6], 5], 4], 3], 2], 1],
+#         "input": [[[[[[[[[[[10], 9], 8], 7], 6], 5], 4], 3], 2], 1]],
 #         "output": [10, 9, 8, 7, 6, 5, 4, 3, 2, 1]
 #     },
 #     {
-#         "input": ["a", ["b", ["]", ["d", ["]", ["f", ["g", ["h", ["i", ["j"]]]]]]]]]],
-#         "output": ["a", "b", "]", "d", "]", "f", "g", "h", "i", "j"]
+#         "input": [["[", ["]", ["[", ["]", ["[", ["]", ["[", ["]", ["[", ["]"]]]]]]]]]]],
+#         "output": ["[", "]", "[", "]", "[", "]", "[", "]", "[", "]"]
 #     }
 # ]
 
-# meta.json
+
+
 
 {
   "title": "Flatten List",
   "name": "flatten_list",
-  "difficulty": "medium",
+  "difficulty": "hard",
   "author": "Felix Egan",
-  "category": "list-2"
+  "category": "list-3"
 }
 
 # Description in Markdown format
