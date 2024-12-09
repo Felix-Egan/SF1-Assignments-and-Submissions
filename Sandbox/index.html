@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SF1 Word Jumble!</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.23.4/full/pyodide.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600&display=swap');
+        
+        body {
+            font-family: 'Fredoka', sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #6B73FF 0%, #000DFF 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: white;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 90%;
+            margin: 2rem auto;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 3px 3px 0px rgba(0,0,0,0.2);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 3rem;
+            opacity: 0.9;
+        }
+
+        .terminal {
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 15px;
+            padding: 1.5rem;
+            width: 100%;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            margin-bottom: 2rem;
+        }
+
+        .terminal-header {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .terminal-button {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .red { background: #FF5F56; }
+        .yellow { background: #FFBD2E; }
+        .green { background: #27C93F; }
+
+        .terminal-content {
+            font-family: monospace;
+            color: #fff;
+            white-space: pre-wrap;
+            min-height: 100px;
+            text-align: left;
+        }
+
+        .input-area {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-top: 2rem;
+        }
+
+        input {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            color: white;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1rem;
+            width: 200px;
+            margin-right: 1rem;
+        }
+
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        button {
+            background: #27C93F;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+        }
+
+        button:disabled {
+            background: #666;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .loader {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+            margin-left: 10px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        #lives {
+            font-size: 1.5rem;
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>SF1 Word Jumble!</h1>
+        <div class="subtitle">Can you guess all the SF1 terms before the final?</div>
+
+        <div class="terminal">
+            <div class="terminal-header">
+                <div class="terminal-button red"></div>
+                <div class="terminal-button yellow"></div>
+                <div class="terminal-button green"></div>
+            </div>
+            <div class="terminal-content" id="output">Loading Python environment...<span class="loader"></span></div>
+        </div>
+
+        <div id="lives"></div>
+
+        <div class="input-area">
+            <input type="text" id="input" placeholder="Enter your guess..." disabled>
+            <button id="submitGuess" onclick="submitGuess()" disabled>Guess</button>
+        </div>
+    </div>
+
+    <script>
+        let pyodide = null;
+        let gameState = null;
+        
+        async function initGame() {
+            try {
+                // Show loading state
+                const output = document.getElementById('output');
+                output.innerHTML = 'Loading Python environment...<span class="loader"></span>';
+                
+                // Load Pyodide
+                console.log('Starting Pyodide load...');
+                pyodide = await loadPyodide({
+                    indexURL: "https://cdn.jsdelivr.net/pyodide/v0.23.4/full/"
+                });
+                
+                // Initialize Python game state
+                await pyodide.runPythonAsync(`
+                    import random
+
+                    word_list = {
+                        "python": "A programming language named after a snake",
+                        "github": "A web-based platform for version control",
+                        "git": "A distributed version control system",
+                        "CPU": "Central Processing Unit",
+                        "RAM": "Random Access Memory",
+                        "motherboard": "The main circuit board of a computer",
+                        "hard_drive": "A device for storing digital data",
+                        "solid_state_drive": "A storage device that uses flash memory",
+                        "network": "A group of interconnected computers",
+                        "packet": "A unit of data transmitted over a network",
+                        "remote_origin": "A default name for the remote repository",
+                        "branch": "A parallel version of a repository",
+                        "merge": "To combine two or more branches",
+                        "pull_request": "A request to merge changes into a repository",
+                        "git_clone": "To copy a repository from a remote source",
+                        "git_commit": "To record changes to a repository",
+                        "git_push": "To upload changes to a remote repository",
+                        "git_pull": "To fetch and download changes from a remote repository",
+                        "git_fetch": "To download changes from a remote repository",
+                        "rebase": "To apply changes from one branch to another",
+                        "repository": "A location where files are stored",
+                        "commit": "A saved change in a repository",
+                        "git_branch": "To create a new branch",
+                        "router": "A device that forwards data packets between computer networks",
+                        "node": "A device connected to a network",
+                        "ISP": "Internet Service Provider",
+                        "linkrot": "The process by which links on a website become broken",
+                        "ip_address": "A unique string of numbers separated by periods that identifies each computer using the Internet Protocol to communicate over a network",
+                        "DNS": "Domain Name System",
+                        "tcp_handshake": "The process of establishing a connection between two computers",
+                        "http": "Hypertext Transfer Protocol",
+                        "curl": "A command-line tool for transferring data with URLs",
+                        "html": "Hypertext Markup Language",
+                        "ssh": "Secure Shell",
+                        "transistor": "A semiconductor device used to amplify or switch electronic signals",
+                        "binary": "A number system with a base of 2 (0s and 1s)",
+                        "integrated_circuit": "A set of electronic circuits on one small flat piece of semiconductor material",
+                        "logic_gate": "A device that performs a basic operation on electrical signals",
+                        "kernel": "The core component of an operating system",
+                        "FOSS": "Free and Open Source Software",
+                        "lookup_table": "A data structure used to store key-value pairs",
+                        "tracing": "A method of debugging code by printing messages to a log",
+                        "boolean": "A data type with two possible values: True or False",
+                        "data": "Information in a form suitable for use with a computer (e.g., numbers, text, images, boolean values, etc...)",
+                        "function": "A block of code that performs a specific task",
+                        "append": "To add an element to the end of a list",
+                        "insert": "To add an element at a specific index in a list",
+                        "remove": "To delete an element from a list",
+                        "pop": "To remove and return the last element from a list",
+                        "index": "The position of an element in a list",
+                        "list": "A collection of items in a specific order",
+                        "tuple": "An immutable collection of items",
+                        "vim": "A highly configurable text editor (that everyone despises)",
+                        "silicon": "A material used in the production of semiconductors and integrated circuits",
+                        "trace_route": "A network diagnostic tool that shows the path of data packets",
+                        "Eric_J_Mayhew": "An amazing programming teacher with a middlename unknown to this day...",
+                        "API call": "A request to a server for information",
+                    }
+
+                    class GameState:
+                        def __init__(self):
+                            self.lives = 3
+                            self.score = 0
+                            self.current_word = ""
+                            self.current_jumble = ""
+                            self.current_hint = ""
+                            
+                        def new_word(self):
+                            self.current_word = random.choice(list(word_list.keys()))
+                            self.current_hint = word_list[self.current_word]
+                            word_list_temp = list(self.current_word)
+                            random.shuffle(word_list_temp)
+                            self.current_jumble = ''.join(word_list_temp)
+                            while self.current_jumble == self.current_word:
+                                random.shuffle(word_list_temp)
+                                self.current_jumble = ''.join(word_list_temp)
+                            return self.current_jumble
+                            
+                        def check_guess(self, guess):
+                            if guess.lower().strip() == self.current_word:
+                                self.score += 1
+                                return True
+                            self.lives -= 1
+                            return False
+
+                    game_state = GameState()
+                    game_state.new_word()
+                `);
+                
+                gameState = pyodide.globals.get('game_state');
+                
+                // Enable UI
+                document.getElementById('input').disabled = false;
+                document.getElementById('submitGuess').disabled = false;
+                document.getElementById('submitGuess').textContent = 'Guess';
+                
+                // Show first word
+                updateGameDisplay();
+                
+            } catch (error) {
+                console.error('Game initialization error:', error);
+                output.innerHTML = 'Error loading game: ' + error.message;
+            }
+        }
+
+        function updateGameDisplay() {
+            const lives = pyodide.runPython('game_state.lives');
+            const score = pyodide.runPython('game_state.score');
+            const jumble = pyodide.runPython('game_state.current_jumble');
+            const hint = pyodide.runPython('game_state.current_hint');
+            
+            document.getElementById('lives').innerHTML = '❤️'.repeat(lives) + '🖤'.repeat(3 - lives);
+            document.getElementById('output').innerHTML = 
+                `Score: ${score}\n\nUnscramble this word: ${jumble}\nHint: ${hint}`;
+            
+            if (lives <= 0) {
+                gameOver();
+            }
+        }
+
+        function gameOver() {
+            const score = pyodide.runPython('game_state.score');
+            const word = pyodide.runPython('game_state.current_word');
+            document.getElementById('output').innerHTML = 
+                `Game Over!\nFinal Score: ${score}\nThe last word was: ${word}`;
+            document.getElementById('input').disabled = true;
+            document.getElementById('submitGuess').disabled = true;
+        }
+
+        async function submitGuess() {
+            const input = document.getElementById('input');
+            const guess = input.value;
+            
+            if (guess.trim() === '') return;
+            
+            const correct = pyodide.runPython(`game_state.check_guess("${guess}")`);
+            
+            if (correct) {
+                pyodide.runPython('game_state.new_word()');
+            }
+            
+            input.value = '';
+            updateGameDisplay();
+        }
+
+        // Handle Enter key
+        document.getElementById('input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                submitGuess();
+            }
+        });
+
+        // Start the game
+        window.addEventListener('load', initGame);
+    </script>
+</body>
+</html>

@@ -1,3 +1,16 @@
+# Description:
+# Kevin and Stuart want to play the 'The Minion Game'.
+#
+# Game Rules:
+# Both players are given the same string, S.
+# Both players have to make substrings using the letters of the string S.
+# Stuart has to make words starting with consonants.
+# Kevin has to make words starting with vowels.
+# The game ends when both players have made all possible substrings.
+# 
+# Scoring:
+# A player gets +1 point for each occurrence of the substring in the string S.
+
 def minion_game(s):
     vowels = "AEIOU"
     Stuart_score = 0
@@ -17,6 +30,10 @@ def minion_game(s):
         print('Draw')
 
 minion_game("BANANA")
+
+# Output:
+# Stuart 12
+# (Kevin 9)
 
 # Interesting solution. Calculates the number letters 'i' in any substring s[i:], checks if the the letter
 # whose index is 'i' is a vowel or not, and adds the number of substrings that can be formed from s[i:] to the
