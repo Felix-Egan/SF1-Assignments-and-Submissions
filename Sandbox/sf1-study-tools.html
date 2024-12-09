@@ -1,4 +1,4 @@
-<!DOCTYPE html> <!--|| WORD JUMBLE = DONE || TRACING EXPRESSIONS = WIP || FLASH CARDS = DONE || FILE GRAPH = TBD || MORE RESSOURCES = DONE ||-->
+<!DOCTYPE html> <!--|| WORD JUMBLE = DONE || HARD CODING PROBLEMS = WIP || FLASH CARDS = DONE || FILE GRAPH = DONE || MORE RESSOURCES = DONE ||-->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -206,9 +206,9 @@
                 <p>Unscramble all SF1 terms before you run out of lives</p>
             </div>
             
-            <div class="game-card" onclick="switchGame('command-line')">
-                <h3>Tracing Expressions</h3>
-                <p>Practice Unix commands in a simulated terminal</p>
+            <div class="game-card" onclick="switchGame('coding-problems')">
+                <h3>Coding Problems: Final Bosses</h3>
+                <p>Practice your coding skills with these summative coding assessments</p>
             </div>
             
             <div class="game-card" onclick="switchGame('flash-cards')">
@@ -531,7 +531,7 @@
                 </script>
             </div>
 
-            <div id="command-line" style="display: none;">
+            <div id="coding-problems" style="display: none;">
                 <h2>Tracing Expressions</h2>
                 <div class="terminal">
                     <div class="terminal-header">
@@ -666,7 +666,7 @@
                 default:
                     alert('Unknown command: ' + input);
             }
-            input.value = '';
+            document.getElementById('cli-input-GRAPH').value = '';
             updateGraph();
         }
 
@@ -922,7 +922,7 @@
 
         // Game switching logic
         function switchGame(gameName) {
-            const games = ['word-jumble', 'command-line', 'flash-cards', 'file-graph' , 'ressources'];
+            const games = ['word-jumble', 'coding-problems', 'flash-cards', 'file-graph' , 'ressources'];
             games.forEach(game => {
                 document.getElementById(game).style.display = 'none';
             });
@@ -959,7 +959,6 @@
             }
 
             updateActiveTerm() {
-                // Update which term is highlighted
                 const items = document.querySelectorAll('#terms-list li');
                 items.forEach((item, i) => {
                     item.className = i === this.currentIndex ? 'active' : '';
