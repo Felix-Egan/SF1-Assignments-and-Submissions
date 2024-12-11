@@ -725,7 +725,7 @@
     Calculate subtotal (sum) of an e-commerce order.
     
     Args:
-        items: List of tuples (price, quantity, discount)
+        items: List of tuples (price, quantity, discount (decimal number))
 
     Returns:   
         float: Subtotal of order
@@ -742,18 +742,18 @@ def process_checkout(items, shipping_address):
     Process an e-commerce checkout with items and shipping address.
     
     Args:
-        items: List of tuples (price, quantity, discount)
+        items: List of tuples (price, quantity, discount (decimal number))
         shipping_address (str): Destination address
 
     Returns:
         float: Total cost of order including tax and delivery
 
     Shipping addresses:
-        Montreal: 10 km, 14.975% tax
-        Toronto: 542 km, 13% tax
-        Vancouver: 4924 km, 12% tax
-        Edmonton: 3584 km, 5% tax
-        Charlottetown: 1149 km, 15% tax
+        Montreal: 10 km away, 14.975% tax
+        Toronto: 542 km away, 13% tax
+        Vancouver: 4924 km away, 12% tax
+        Edmonton: 3584 km away, 5% tax
+        Charlottetown: 1149 km away, 15% tax
 
     Delivery cost:
         1.80$ per 100 km = 0.018$/km
@@ -778,6 +778,7 @@ def process_checkout(items, shipping_address):
     - Large: $12
     Each topping: $1.50
     """
+    pizza_prices = [('S', 8), ('M', 10), ('L', 12)]
     # Start coding here...
 
 
@@ -828,14 +829,14 @@ def update_player_rank(current_rank, recent_sessions):
     Update player rank based on recent game sessions.
     
     Args:
-        current_rank (str): Current rank ('Bronze' to 'Diamond')
+        current_rank (str): Current rank EG: ('Bronze')
         recent_sessions: List of tuples (kills, time_alive, position)
         
     Returns:
-        str: New rank after calculating recent performance: "<old rank> => <new rank>"
+        str: New rank after calculating the average of points aquired in recent performances: "<old rank> => <new rank>"
+            Hint: use '//' to floor divide the total points by the number of sessions to get the average
         
-    Ranks: Bronze (0-999), Silver (1000-1999),
-    Gold (2000-2999), Diamond (3000+)
+    Ranks: Bronze (0-999), Silver (1000-1999), Gold (2000-2999), Diamond (3000+)
     """
     # Start coding here...`
                     };
@@ -871,7 +872,7 @@ def update_player_rank(current_rank, recent_sessions):
                                 "description": "Large order to furthest city with discounts",
                                 "input": input_data,
                                 "passed": abs(result - 4148.58) < 0.1,
-                                "expected": "~3391.62",
+                                "expected": "~4148.58",
                                 "actual": f"{result:.2f}"
                             })
             
@@ -893,7 +894,7 @@ def update_player_rank(current_rank, recent_sessions):
                                 "description": "Casual test, realistic",
                                 "input": input_data,
                                 "passed": abs(result - 78.18) < 0.1,
-                                "expected": "~78.45",
+                                "expected": "~78.18",
                                 "actual": f"{result:.2f}"
                             })
             
@@ -915,7 +916,7 @@ def update_player_rank(current_rank, recent_sessions):
                                 "description": "Complex order with mixed discounts",
                                 "input": input_data,
                                 "passed": abs(result - 391.13) < 0.1,
-                                "expected": "~283.81",
+                                "expected": "~391.13",
                                 "actual": f"{result:.2f}"
                             })
             
@@ -926,7 +927,7 @@ def update_player_rank(current_rank, recent_sessions):
                                 "description": "Another casual test with random values",
                                 "input": input_data,
                                 "passed": abs(result - 65.47) < 0.1,
-                                "expected": "~59.54",
+                                "expected": "~65.47",
                                 "actual": f"{result:.2f}"
                             })
             

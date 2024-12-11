@@ -41,7 +41,10 @@ def process_checkout(items, shipping_address):
     """
     addresses = [("Montreal", 10, 14.975), ("Toronto", 542, 13), ("Vancouver", 4924, 12), ("Edmonton", 3584, 5), ("Charlottetown", 1149, 15)]
     subtotal = calculate_subtotal(items)
-    address = next(addr for addr in addresses if addr[0] in shipping_address)
+    address = None
+    for addr in addresses:
+        if addr[0] == shipping_address:
+            address = addr
     distance = address[1]
     tax_rate = address[2]
     delivery_cost = (distance / 100) * 1.80
@@ -159,11 +162,11 @@ def update_player_rank(current_rank, recent_sessions):
     Update player rank based on recent game sessions.
     
     Args:
-        current_rank (str): Current rank ('Bronze' to 'Diamond')
+        current_rank (str): Current rank EG: ('Bronze')
         recent_sessions: List of tuples (kills, time_alive, position)
         
     Returns:
-        str: New rank after calculating recent performance
+        str: New rank after calculating the average of points aquired in recent performances
         
     Ranks: Bronze (0-999), Silver (1000-1999),
     Gold (2000-2999), Diamond (3000+)
