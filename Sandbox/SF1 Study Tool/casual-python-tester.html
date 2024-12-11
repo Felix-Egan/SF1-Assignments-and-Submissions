@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Python Coding Challenges</title>
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.23.4/full/pyodide.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .problem {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .editor {
+            height: 670px;
+            margin: 15px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .test-output {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 4px;
+            white-space: pre-wrap;
+            margin-top: 15px;
+            border: 1px solid #e9ecef;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 10px 0;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        .test-case {
+            margin: 10px 0;
+            padding: 10px;
+            border-left: 5px solid;
+            background-color: #f8f9fa;
+        }
+        .test-case.pass {
+            border-left-color: #28a745;
+        }
+        .test-case.fail {
+            border-left-color: #dc3545;
+        }
+        .error {
+            color: #dc3545;
+            font-family: monospace;
+            margin: 5px 0;
+        }
+        .summary {
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid #ddd;
+        }
+        .passed { color: #28a745; }
+        .failed { color: #dc3545; }
+        .test-results-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+            font-size: 14px;
+        }
+
+        .test-results-table th, 
+        .test-results-table td {
+            padding: 8px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        .test-results-table th {
+            background-color: #f5f5f5;
+            position: sticky;
+            top: 0;
+        }
+
+        .table-container {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .test-results-table tr.pass {
+            background-color: rgba(40, 167, 69, 0.1);
+        }
+
+        .test-results-table tr.fail {
+            background-color: rgba(220, 53, 69, 0.1);
+        }
+
+        .test-results-table td.truncate {
+            max-width: 200px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .test-results-table td.truncate:hover {
+            white-space: normal;
+            overflow: visible;
+        }
+    </style>
+</head>
+<body>
+    <h1>Python Coding Challenges</h1>
+    
+    <div class="problem">
+        <h2>1. E-Commerce Order💲</h2>
+        <p>Calculate the final price for an E-Commerce order based on where it is being shipped. You will have to write 2 functions. The first takes in a list of tuples, which represent the items and their prices (and discounts, if any).
+        The second function takes in the list of items and the shipping address and calculates the total cost of the order including tax and delivery.</p>
+        <div id="editor1" class="editor"></div>
+        <button onclick="runTests(1)">Run Tests</button>
+        <div class="test-output" id="output1"></div>
+    </div>
+
+    <div class="problem">
+        <h2>2. Pizza Time! Pizzeria™️</h2>
+        <p>Calculate the price of a pizza order from the world famous Pizza Time! Pizzaria™️. Your first function will require you to calculate the base price for a pizza depending on its size and topping count.
+        The second function will take in a list of pizzas and calculate the total cost of the order after applying any deals.
+        </p>
+        <div id="editor2" class="editor"></div>
+        <button onclick="runTests(2)">Run Tests</button>
+        <div class="test-output" id="output2"></div>
+    </div>
+
+    <div class="problem">
+        <h2>3. Ultimate Gamer 🎮</h2>
+        <p>Output the rank of a player based on their recent game sessions. The first function will calculate the points earned in a battle royale game session based on eliminations, survival time, and final placement.
+        The second function will update the player's rank based on their recent performance.</p>
+        <div id="editor3" class="editor"></div>
+        <button onclick="runTests(3)">Run Tests</button>
+        <div class="test-output" id="output3"></div>
+    </div>
+
+    <script>
+        // Initialize editors with default solutions
+        const editors = {
+            1: ace.edit("editor1"),
+            2: ace.edit("editor2"),
+            3: ace.edit("editor3")
+        };
+
+        const defaultSolutions = {
+            1: `def calculate_subtotal(items):
+
+    """
+    Calculate subtotal (sum) of an e-commerce order.
+    
+    Args:
+        items: List of tuples (price, quantity, discount)
+
+    Returns:   
+        float: Subtotal of order
+    """
+    # Start coding here...
+
+
+
+
+
+def process_checkout(items, shipping_address):
+
+    """
+    Process an e-commerce checkout with items and shipping address.
+    
+    Args:
+        items: List of tuples (price, quantity, discount)
+        shipping_address (str): Destination address
+
+    Returns:
+        float: Total cost of order including tax and delivery
+
+    Shipping addresses:
+        Montreal: 10 km, 14.975% tax
+        Toronto: 542 km, 13% tax
+        Vancouver: 4924 km, 12% tax
+        Edmonton: 3584 km, 5% tax
+        Charlottetown: 1149 km, 15% tax
+    """
+    addresses = [("Montreal", 10, 14.975), ("Toronto", 542, 13), ("Vancouver", 4924, 12), ("Edmonton", 3584, 5), ("Charlottetown", 1149, 15)]
+    # Start coding here...`,
+
+            2: `def calculate_pizza_price(size, toppings):
+    """
+    Calculate price of a single pizza.
+    
+    Args:
+        size (str): 'S', 'M', or 'L'
+        toppings (list): List of toppings
+        
+    Returns:
+        float: Price of pizza
+        
+    Base prices:
+    - Small: $8
+    - Medium: $10 
+    - Large: $12
+    Each topping: $1.50
+    """
+    # Start coding here...
+
+
+
+
+
+def calculate_order_total(pizzas):
+    """
+    Calculate total order cost with deals applied.
+    
+    Args:
+        pizzas: List of tuples (size, [toppings])
+        
+    Returns:
+        float: Total order cost after deals
+        
+    Deals:
+    - Order 2+ pizzas: 10% off
+    - Large pizza with 3+ toppings: $2 off
+    """     
+    # Start coding here...`,
+
+            3: `def calculate_session_points(kills, time_alive, position):
+    """
+    Calculate points earned in a battle royale game session.
+    
+    Args:
+        kills (int): Number of eliminations
+        time_alive (int): Survival time in minutes
+        position (int): Final placement (1-100)
+        
+    Returns:
+        int: Points earned this session
+        
+    Points system:
+    - Each kill: 50 points
+    - Every minute survived: 10 points
+    - Top 10 placement bonus: 300 points
+    - Victory bonus: 500 points
+    """
+    # Start coding here...
+
+
+
+
+def update_player_rank(current_rank, recent_sessions):
+    """
+    Update player rank based on recent game sessions.
+    
+    Args:
+        current_rank (str): Current rank ('Bronze' to 'Diamond')
+        recent_sessions: List of tuples (kills, time_alive, position)
+        
+    Returns:
+        str: New rank after calculating recent performance
+        
+    Ranks: Bronze (0-999), Silver (1000-1999),
+    Gold (2000-2999), Diamond (3000+)
+    """
+    # Start coding here...`
+        };
+
+        // Configure editors
+        Object.values(editors).forEach((editor, index) => {
+            editor.setTheme("ace/theme/dracula");
+            editor.session.setMode("ace/mode/python");
+            editor.setFontSize(14);
+            editor.setValue(defaultSolutions[index + 1], -1);
+        });
+
+        let pyodide = null;
+
+        async function initPyodide() {
+            if (!pyodide) {
+                pyodide = await loadPyodide({
+                    indexURL: "https://cdn.jsdelivr.net/pyodide/v0.23.4/full/"
+                });
+            }
+            return pyodide;
+        }
+
+        
+        async function testRecipeCalculator(pyodide) {
+            return await pyodide.runPython(`
+                import json
+                test_cases = []
+                
+                # Test scaling recipe
+                input_data = [[1, "cup", "flour"]], 2
+                result = scale_recipe(*input_data)
+                test_cases.append({
+                    "description": "Scale recipe for double servings",
+                    "input": input_data,
+                    "passed": result == [[2, "cup", "flour"]],
+                    "expected": [[2, "cup", "flour"]],
+                    "actual": result
+                })
+
+                # Test measurement conversion
+                input_data = 1, "cups", "tbsp"
+                result = convert_measurement(*input_data)
+                test_cases.append({
+                    "description": "Convert 1 cup to tablespoons",
+                    "input": input_data,
+                    "passed": result == 16,
+                    "expected": 16,
+                    "actual": result
+                })
+
+                json.dumps({"cases": test_cases})
+            `);
+        }
+
+        async function testEmojiCounter(pyodide) {
+            return await pyodide.runPython(`
+                import json
+                test_cases = []
+                
+                # Test emoji counting
+                input_data = "Hello 😊🌍"
+                result = count_emojis("Hello 😊🌍")
+                test_cases.append({
+                    "description": "Count emojis in message",
+                    "input": input_data,
+                    "passed": result == 2,
+                    "expected": 2,
+                    "actual": result
+                })
+
+                # Test emoji density
+                input_data = "Hello 😊🌍"
+                result = emoji_density("Hello 😊🌍")
+                test_cases.append({
+                    "description": "Calculate emoji density",
+                    "input": input_data,
+                    "passed": abs(result - 25) < 0.1,
+                    "expected": "~25%",
+                    "actual": f"{result:.1f}%"
+                })
+
+                json.dumps({"cases": test_cases})
+            `);
+        }
+
+        async function testTaskScheduler(pyodide) {
+            return await pyodide.runPython(`
+                import json
+                test_cases = []
+                
+                # Test duration estimation
+                input_data = "Write report", 3
+                result = estimate_duration("Write report", 3)
+                test_cases.append({
+                    "description": "Estimate task duration",
+                    input": input_data,
+                    "passed": result == 90,
+                    "expected": 90,
+                    "actual": result
+                })
+
+                # Test task sorting
+                input_data = [["Write report", 3], ["Quick email", 1]]
+                result = sort_tasks([["Write report", 3], ["Quick email", 1]])
+                test_cases.append({
+                    "description": "Sort tasks by duration",
+                    "input": input_data,
+                    "passed": result == [["Quick email", 30], ["Write report", 90]],
+                    "expected": [["Quick email", 30], ["Write report", 90]],
+                    "actual": result
+                })
+
+                # Test schedule optimization
+                input_data = [["Write report", 90], ["Quick email", 30]], 60
+                result = optimize_schedule([["Write report", 90], ["Quick email", 30]], 60)
+                test_cases.append({
+                    "description": "Optimize schedule within time limit",
+                    "input": input_data,
+                    "passed": result == [["Quick email", 30]],
+                    "expected": [["Quick email", 30]],
+                    "actual": result
+                })
+
+                json.dumps({"cases": test_cases})
+            `);
+        }
+
+        async function runTests(problemNumber) {
+            const outputElement = document.getElementById(`output${problemNumber}`);
+            outputElement.innerHTML = 'Initializing Python environment...';
+
+            try {
+                const pyodide = await initPyodide();
+                const code = editors[problemNumber].getValue();
+                
+                // Execute the user's code
+                await pyodide.runPython(code);
+
+                // Run the appropriate test suite
+                let testResults;
+                switch(problemNumber) {
+                    case 1:
+                        testResults = await testRecipeCalculator(pyodide);
+                        break;
+                    case 2:
+                        testResults = await testEmojiCounter(pyodide);
+                        break;
+                    case 3:
+                        testResults = await testTaskScheduler(pyodide);
+                        break;
+                }
+
+                // Parse the JSON string returned from Python
+                testResults = JSON.parse(testResults);
+
+                outputElement.innerHTML = formatTestResults(testResults);
+            } catch (error) {
+                outputElement.innerHTML = `<div class="error">Error: ${error.message}</div>`;
+                console.error(error);
+            }
+        }
+
+        function formatTestResults(results) {
+            if (!results || !results.cases) {
+                return '<div class="error">Invalid test results</div>';
+            }
+
+            let html = '<div class="table-container"><table class="test-results-table">';
+            
+            // Add table header
+            html += `
+                <tr>
+                    <th>#</th>
+                    <th>Status</th>
+                    <th>Description</th>
+                    <th>Input</th>
+                    <th>Expected</th>
+                    <th>Actual</th>
+                </tr>
+            `;
+
+            // Add test cases
+            results.cases.forEach((test, index) => {
+                const statusClass = test.passed ? 'pass' : 'fail';
+                const icon = test.passed ? '✅' : '❌';
+                
+                html += `
+                    <tr class="${statusClass}">
+                        <td>${index + 1}</td>
+                        <td>${icon}</td>
+                        <td class="truncate">${test.description}</td>
+                        <td class="truncate">${JSON.stringify(test.input)}</td>
+                        <td class="truncate">${JSON.stringify(test.expected)}</td>
+                        <td class="truncate">${JSON.stringify(test.actual)}</td>
+                    </tr>
+                `;
+            });
+
+            html += '</table></div>';
+
+            // Add summary footer
+            const passedTests = results.cases.filter(t => t.passed).length;
+            html += `
+                <div class="summary" style="margin-top: 10px; font-weight: bold;">
+                    Total: ${results.cases.length}  
+                    <span class="passed">✅ ${passedTests}</span>  
+                    <span class="failed">❌ ${results.cases.length - passedTests}</span>
+                </div>
+            `;
+
+            return html;
+        }
+    </script>
+</body>
+</html>
