@@ -1,4 +1,4 @@
-<!DOCTYPE html> <!--|| WORD JUMBLE = DONE || HARD CODING PROBLEMS = WIP || FLASH CARDS = DONE || FILE GRAPH = DONE || MORE RESSOURCES = DONE ||-->
+<!DOCTYPE html> <!--|| WORD JUMBLE = fix FOSS || HARD CODING PROBLEMS = fix TESTS & MAKE PROBLEMS || FLASH CARDS = COMPLETED || FILE GRAPH = COMPLETED || MORE RESSOURCES = ADD MORE STUFF ||-->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -18,9 +18,27 @@
             margin: 20px 0;
             text-align: center;
         }
+        .problem {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #fff;
+        }
         .cards-layout {
             display: flex;
             gap: 20px;
+        }
+        .editor {
+            height: 600px;
+            margin: 15px 0;
+            border: 1px solid #ccc;
+        }
+        .test-output {
+            background: #f5f5f5;
+            padding: 10px;
+            border-radius: 4px;
+            white-space: pre-wrap;
         }
         .cards-list {
             width: 200px;
@@ -29,6 +47,10 @@
             border-radius: 8px;
             max-height: 400px;
             overflow-y: auto;
+        }
+        svg {
+            padding: 2rem;
+            box-sizing: border-box;
         }
         .cards-list h3 {
             margin-top: 0;
@@ -194,9 +216,65 @@
             stroke: #ff7300;
             stroke-width: 3px;
         }
+        #loadingScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(120deg, #3498db, #06e2fb);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+        .loader-content {
+            text-align: center;
+            color: white;
+        }
+        .loader-content h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+        .loading-bar {
+            width: 200px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 3px;
+            margin: 20px auto;
+            overflow: hidden;
+        }
+        .progress {
+            width: 0%;
+            height: 100%;
+            background: white;
+            animation: loading 3s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        @keyframes loading {
+            0% { width: 0; }
+            50% { width: 100%; }
+            100% { width: 100%; }
+        }
     </style>
 </head>
 <body>
+    <div id="loadingScreen">
+        <div class="loader-content">
+            <h1>SF1 Study Tools</h1>
+            <div class="loading-bar">
+                <div class="progress"></div>
+            </div>
+            <p>Loading Python Environment...</p>
+            <p>This may take some time...</p>
+            <p>This tool works better in full-screen mode (F11)</p>
+        </div>
+    </div>
     <div class="container">
         <h1>SF1 Interactive Study Tools</h1>
         
@@ -305,9 +383,9 @@
                                     "transistor": "A semiconductor device used to amplify or switch electronic signals",
                                     "binary": "A number system with a base of 2 (0s and 1s)",
                                     "integrated_circuit": "A set of electronic circuits on one small flat piece of semiconductor material",
-                                    "logic_gate": "A device that performs a basic operation on electrical signals",
+                                    "logic_gate": "A component made of a set of transistors that performs a basic operation on electrical signals",
                                     "kernel": "The core component of an operating system",
-                                    "FOSS": "Free and Open Source Software",
+                                    "foss": "Free and Open Source Software",
                                     "lookup_table": "A data structure used to store key-value pairs",
                                     "tracing": "A method of debugging code by printing messages to a log",
                                     "data": "Information in a form suitable for use with a computer (e.g., numbers, text, images, boolean values, etc...)",
@@ -434,7 +512,7 @@
                                         return None
                                         
                                     def check_guess(self, guess):
-                                        if guess.lower().strip() == self.current_word:
+                                        if guess.lower().strip() == self.current_word.lower():
                                             self.score += 1
                                             self.current_index += 1
                                             self.update_progress()
@@ -471,6 +549,12 @@
                             
                             // Show first word
                             updateGameDisplay();
+
+                            document.getElementById('loadingScreen').style.opacity = '0';
+                            document.getElementById('loadingScreen').style.transition = 'opacity 0.5s';
+                            setTimeout(() => {
+                                document.getElementById('loadingScreen').style.display = 'none';
+                            }, 500);
                             
                         } catch (error) {
                             console.error('Game initialization error:', error);
@@ -532,22 +616,188 @@
             </div>
 
             <div id="coding-problems" style="display: none;">
-                <h2>Tracing Expressions</h2>
-                <div class="terminal">
-                    <div class="terminal-header">
-                        <div class="terminal-button red"></div>
-                        <div class="terminal-button yellow"></div>
-                        <div class="terminal-button green"></div>
-                    </div>
-                    <div class="terminal-content" id="cli-output">
-                        Welcome to Tracing Expressions!
-                        Complete the task: Create a new directory named 'project'
-                    </div>
+                <h2>Summative Coding Problems</h2>
+                <div class="problem" id="recipe-calculator">
+                    <h2>1. Recipe Calculator 🧑‍🍳</h2>
+                    <p>Help adjust recipe ingredients based on number of servings and convert between measurement units.</p>
+                    <div id="editor1" class="editor"></div>
+                    <button onclick="runTests(1)">Run Tests</button>
+                    <div class="test-output" id="output1"></div>
                 </div>
-                <div class="input-area">
-                    <input type="text" id="cli-input-TRACE" placeholder="Enter command">
-                    <button onclick="executeCommand()">Execute</button>
+            
+                <div class="problem" id="text-emoji">
+                    <h2>2. Text Message Emoji Counter 📱</h2>
+                    <p>Analyze text messages to count emojis and calculate emoji density.</p>
+                    <div id="editor2" class="editor"></div>
+                    <button onclick="runTests(2)">Run Tests</button>
+                    <div class="test-output" id="output2"></div>
                 </div>
+            
+                <div class="problem" id="daily-tasks">
+                    <h2>3. Daily Task Scheduler ✅</h2>
+                    <p>Help organize daily tasks by priority and time management.</p>
+                    <div id="editor3" class="editor"></div>
+                    <button onclick="runTests(3)">Run Tests</button>
+                    <div class="test-output" id="output3"></div>
+                </div>
+            
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"></script>
+                <script>
+                    // Initialize editors
+                    const editors = {
+                        1: ace.edit("editor1"),
+                        2: ace.edit("editor2"),
+                        3: ace.edit("editor3")
+                    };
+            
+                    // Configure each editor
+                    Object.values(editors).forEach(editor => {
+                        editor.setTheme("ace/theme/monokai");
+                        editor.session.setMode("ace/mode/python");
+                        editor.setFontSize(14);
+                    });
+            
+                    // Set initial code templates
+                    editors[1].setValue(`def scale_recipe(ingredients, servings):
+    """
+    Scale recipe ingredients based on desired servings.
+    ingredients: list of [amount, unit, item]
+    servings: int (desired number of servings)
+    Returns: list of [scaled_amount, unit, item]
+    """
+    pass
+
+def convert_measurement(amount, from_unit, to_unit):
+    """
+    Convert between common cooking measurements.
+    amount: float (amount to convert)
+    from_unit: str (cups, tbsp, tsp)
+    to_unit: str (cups, tbsp, tsp)
+    Returns: float (converted amount)
+    """
+    pass`);
+            
+                    editors[2].setValue(`def count_emojis(message):
+    """
+    Count number of emojis in a message.
+    message: str (text message with emojis)
+    Returns: int (number of emojis)
+    """
+    pass
+
+def emoji_density(message):
+    """
+    Calculate percentage of characters that are emojis.
+    message: str (text message with emojis)
+    Returns: float (percentage between 0-100)
+    """
+    pass`);
+            
+                    editors[3].setValue(`def estimate_duration(task, difficulty):
+    """
+    Estimate time needed for a task.
+    task: str (task description)
+    difficulty: int (1-5 scale)
+    Returns: int (minutes needed)
+    """
+    pass
+
+def sort_tasks(tasks):
+    """
+    Sort tasks by estimated duration.
+    tasks: list of [task, difficulty]
+    Returns: list of [task, duration]
+    """
+    pass
+
+def optimize_schedule(tasks, available_time):
+    """
+    Select tasks that fit within available time.
+    tasks: list of [task, duration]
+    available_time: int (minutes available)
+    Returns: list of selected tasks
+    """
+    pass`);
+            
+                    // Test functions
+                    const tests = {
+                        1: function(code) {
+                            try {
+                                eval(`
+                                    ${code}
+                                    let results = [];
+                                    
+                                    // Test scale_recipe
+                                    let recipe = [[2, "cups", "flour"], [1, "tsp", "salt"]];
+                                    let scaled = scale_recipe(recipe, 2);
+                                    results.push(scaled[0][0] === 4);
+                                    results.push(scaled[1][0] === 2);
+                                    
+                                    // Test convert_measurement
+                                    results.push(convert_measurement(1, "cups", "tbsp") === 16);
+                                    results.push(convert_measurement(2, "tbsp", "tsp") === 6);
+                                    
+                                    return results;
+                                `);
+                                return "All tests passed! 🧑‍🍳";
+                            } catch (e) {
+                                return `Error: ${e.message}`;
+                            }
+                        },
+                        2: function(code) {
+                            try {
+                                eval(`
+                                    ${code}
+                                    let results = [];
+                                    
+                                    // Test count_emojis
+                                    results.push(count_emojis("Hello 😊") === 1);
+                                    results.push(count_emojis("No emojis") === 0);
+                                    
+                                    // Test emoji_density
+                                    results.push(emoji_density("Hi 😊") === 25);
+                                    results.push(emoji_density("ABC") === 0);
+                                    
+                                    return results;
+                                `);
+                                return "All tests passed! 📱";
+                            } catch (e) {
+                                return `Error: ${e.message}`;
+                            }
+                        },
+                        3: function(code) {
+                            try {
+                                eval(`
+                                    ${code}
+                                    let results = [];
+                                    
+                                    // Test estimate_duration
+                                    results.push(estimate_duration("quick task", 1) < estimate_duration("hard task", 5));
+                                    
+                                    // Test sort_tasks
+                                    let tasks = [["easy", 1], ["hard", 5]];
+                                    let sorted = sort_tasks(tasks);
+                                    results.push(sorted[0][1] < sorted[1][1]);
+                                    
+                                    // Test optimize_schedule
+                                    let schedule = optimize_schedule([["task1", 30], ["task2", 45]], 60);
+                                    results.push(schedule.length > 0);
+                                    
+                                    return results;
+                                `);
+                                return "All tests passed! ✅";
+                            } catch (e) {
+                                return `Error: ${e.message}`;
+                            }
+                        }
+                    };
+            
+                    function runTests(problemNum) {
+                        const code = editors[problemNum].getValue();
+                        const output = tests[problemNum](code);
+                        document.getElementById(`output${problemNum}`).textContent = output;
+                    }
+                </script>
             </div>
 
             <div id="flash-cards" style="display: none;">
@@ -578,8 +828,10 @@
 
             <div id="file-graph" style="display: none;">
                 <h2>File Graph Visualizer</h2>
-                <svg width="1400" height="550"></svg>
-                
+                <div style="width: 100%; position: relative; padding-bottom: 39.3%;">
+                    <!-- 39.3% comes from (550/1400 * 100) to maintain the original aspect ratio -->
+                    <svg style="position: absolute; width: 100%; height: 100%; top: 0; left: 0;"></svg>
+                </div>
                 <div class="cli">
                     <input type="text" id="cli-input-GRAPH" placeholder="Enter command">
                     <button onclick="executeCommand()">Execute</button>
@@ -596,11 +848,12 @@
                 <ul>
                     <li>Orange Dot = CWD, Current Working Directory</li>
                     <li>cd [id]: Change directory to [id]</li>
+                    <li>cd .. : Change directory to parent directory</li>
                     <li>touch [id]: Create a file with [id]</li>
                     <li>mkdir [id]: Create a folder with [id]</li>
                     <li>rm [id]: Remove a file with [id]</li>
                     <li>rmdir [id]: Remove a folder with [id]</li>
-                    <li>vim [id]: Edit a file with [id]</li>
+                    <li>vim [id]: Edit a file with [id] (does not actually use vim)</li>
                     <li>cat [id]: View the contents of a file with [id]</li>
                 </ul>
             </div>
@@ -679,6 +932,7 @@
                 }
             } else if (nodes[id] && nodes[id].type === 'grey' && nodes[id].parent === selectedNode) {
                 selectedNode = id;
+                document.getElementById('cli-output-GRAPH').textContent = 'Changed directory to: ' + id;
             } else {
                 document.getElementById('cli-output-GRAPH').textContent = 'Error: Invalid directory';
             }
@@ -686,9 +940,10 @@
 
         function createFile(id) {
             if (nodes[id]) {
-                document.getElementById('cli-output-GRAPH').textContent = 'Error: Vertex already exists';
+                document.getElementById('cli-output-GRAPH').textContent = 'Error: File already exists';
                 return;
             }
+            document.getElementById('cli-output-GRAPH').textContent = 'File created: ' + id;
             nodes[id] = { id, type: 'blue', parent: selectedNode, children: [] };
             nodes[selectedNode].children.push(id);
             links.push({ source: selectedNode, target: id });
@@ -696,9 +951,10 @@
 
         function createFolder(id) {
             if (nodes[id]) {
-                document.getElementById('cli-output-GRAPH').textContent = 'Error: Vertex already exists';
+                document.getElementById('cli-output-GRAPH').textContent = 'Error: Folder already exists';
                 return;
             }
+            document.getElementById('cli-output-GRAPH').textContent = 'Folder created: ' + id;
             nodes[id] = { id, type: 'grey', parent: selectedNode, children: [] };
             nodes[selectedNode].children.push(id);
             links.push({ source: selectedNode, target: id });
@@ -709,6 +965,7 @@
                 document.getElementById('cli-output-GRAPH').textContent = 'Error: Invalid file';
                 return;
             }
+            document.getElementById('cli-output-GRAPH').textContent = 'File removed: ' + id;
             delete nodes[id];
             nodes[selectedNode].children = nodes[selectedNode].children.filter(child => child !== id);
             links.splice(links.findIndex(link => link.source === selectedNode && link.target === id), 1);
@@ -723,9 +980,10 @@
                 document.getElementById('cli-output-GRAPH').textContent = 'Error: Folder is not empty';
                 return;
             }
+            document.getElementById('cli-output-GRAPH').textContent = 'Folder removed: ' + id;
             delete nodes[id];
             nodes[selectedNode].children = nodes[selectedNode].children.filter(child => child !== id);
-            links.splice(links.findIndex(link => link.source === selectedNode && link.target === id), 1);
+            links.splice(links.findIndex(link => link.source === selectedNode && link.target === id), 1)
         }
 
         function editFile(id) {
@@ -744,22 +1002,32 @@
                 document.getElementById('cli-output-GRAPH').textContent = 'Error: Invalid file';
                 return;
             }
-            document.getElementById('cli-output-GRAPH').textContent = 'Error: File is empty';
+            if (!fileContents[id]) {
+                document.getElementById('cli-output-GRAPH').textContent = 'Error: File is empty';
+                return;
+            }
+            document.getElementById('cli-output-GRAPH').textContent = nodes[id] + ' = ' + fileContents[id];
         }
 
         const svg = d3.select("svg");
-        const width = +svg.attr("width");
-        const height = +svg.attr("height");
 
         function updateGraph() {
             // Clear existing graph elements
             svg.selectAll("*").remove();
 
+            const container = svg.node().parentNode;
+            const width = container.clientWidth;
+            const height = container.clientHeight;
+
+            svg.attr("viewBox", `0 0 1400 550`);
+
+
+
             const g = svg.append("g").attr("transform", "translate(0, 10)");
 
             const root = d3.hierarchy(nodes['/'], d => d.children.map(child => nodes[child]));
 
-            const treeLayout = d3.tree().size([width, height - 100]); 
+            const treeLayout = d3.tree().size([1400, 450]); 
             treeLayout(root);
 
             const link = g.append("g")
@@ -804,34 +1072,34 @@
         { front:"CPU", back: "Central Processing Unit" },
         { front:"RAM", back: "Random Access Memory" },
         { front:"motherboard", back: "The main circuit board of a computer" },
-        { front:"hard_drive", back: "A device for storing digital data" },
-        { front:"solid_state_drive", back: "A storage device that uses flash memory" },
+        { front:"hard drive", back: "A device for storing digital data" },
+        { front:"solid state drive", back: "A storage device that uses flash memory" },
         { front:"network", back: "A group of interconnected computers" },
         { front:"packet", back: "A unit of data transmitted over a network" },
-        { front:"remote_origin", back: "A default name for the remote repository" },
+        { front:"remote origin", back: "A default name for the remote repository" },
         { front:"branch", back: "A parallel version of a repository" },
         { front:"merge", back: "To combine two or more branches" },
-        { front:"pull_request", back: "A request to merge changes into a repository" },
+        { front:"pull request", back: "A request to merge changes into a repository" },
         { front:"repository", back: "A location where files are stored" },
         { front:"commit", back: "A saved change in a repository" },
         { front:"router", back: "A device that forwards data packets between computer networks" },
         { front:"node", back: "A device connected to a network" },
         { front:"ISP", back: "Internet Service Provider" },
         { front:"linkrot", back: "The process by which links on a website become broken" },
-        { front:"ip_address", back: "A unique string of numbers separated by periods that identifies each computer using the Internet Protocol to communicate over a network" },
+        { front:"ip address", back: "A unique string of numbers separated by periods that identifies each computer using the Internet Protocol to communicate over a network" },
         { front:"DNS", back: "Domain Name System" },
-        { front:"tcp_handshake", back: "The process of establishing a connection between two computers" },
+        { front:"tcp handshake", back: "The process of establishing a connection between two computers" },
         { front:"http", back: "Hypertext Transfer Protocol" },
         { front:"curl", back: "A command-line tool for transferring data with URLs" },
         { front:"html", back: "Hypertext Markup Language" },
         { front:"ssh", back: "Secure Shell" },
         { front:"transistor", back: "A semiconductor device used to amplify or switch electronic signals" },
         { front:"binary", back: "A number system with a base of 2 (0s and 1s)" },
-        { front:"integrated_circuit", back: "A set of electronic circuits on one small flat piece of semiconductor material" },
-        { front:"logic_gate", back: "A device that performs a basic operation on electrical signals" },
+        { front:"integrated circuit", back: "A set of electronic circuits on one small flat piece of semiconductor material" },
+        { front:"logic gate", back: "A component made of a set of transistors that performs a basic operation on electrical signals" },
         { front:"kernel", back: "The core component of an operating system" },
         { front:"FOSS", back: "Free and Open Source Software" },
-        { front:"lookup_table", back: "A data structure used to store key-value pairs" },
+        { front:"lookup table", back: "A data structure used to store key-value pairs" },
         { front:"tracing", back: "A method of debugging code by printing messages to a log" },
         { front:"data", back: "Information in a form suitable for use with a computer (e.g. numbers, text, images, boolean values, etc...)" },
         { front:"function", back: "A block of code that performs a specific task" },
@@ -844,22 +1112,22 @@
         { front:"tuple", back: "An immutable collection of items" },
         { front:"vim", back: "A highly configurable text editor (that everyone despises)" },
         { front:"silicon", back: "A material used in the production of semiconductors and integrated circuits" },
-        { front:"trace_route", back: "A network diagnostic tool that shows the path of data packets" },
-        { front:"Eric_J_Mayhew", back: "An amazing programming teacher with a middlename unknown to this day..." },
-        { front:"API_call", back: "A request to a server for information" },
-        { front:"programming_language", back: "A formal language comprising a set of instructions that produce various kinds of output" },
-        { front:"compiled_language", back: "A programming language that is translated into machine code before execution" },
-        { front:"interpreted_language", back: "A programming language that is executed line by line" },
+        { front:"trace route", back: "A network diagnostic tool that shows the path of data packets" },
+        { front:"Eric J. Mayhew", back: "An amazing programming teacher with a middlename unknown to this day..." },
+        { front:"API call", back: "A request to a server for information" },
+        { front:"programming language", back: "A formal language comprising a set of instructions that produce various kinds of output" },
+        { front:"compiled language", back: "A programming language that is translated into machine code before execution" },
+        { front:"interpreted language", back: "A programming language that is executed line by line" },
         { front:"print()", back: "A function that displays output to the console" },
         { front:"input()", back: "A function that takes user input" },
         { front:"type()", back: "A function that returns the type of an object" },
         { front:"len()", back: "A function that returns the length of an object" },
         { front:"range()", back: "A function that generates a sequence of numbers" },
-        { front:"for_loop", back: "A control flow statement for specifying iteration" },
-        { front:"while_loop", back: "A control flow statement that allows code to be executed repeatedly" },
-        { front:"if_statement", back: "A control flow statement that executes code based on a condition" },
-        { front:"else_statement", back: "A control flow statement that executes code if the condition of an if statement is false" },
-        { front:"elif_statement", back: "A control flow statement that executes code if the condition of an if statement is false and its own condition is true" },
+        { front:"for loop", back: "A control flow statement for specifying iteration" },
+        { front:"while loop", back: "A control flow statement that allows code to be executed repeatedly" },
+        { front:"if statement", back: "A control flow statement that executes code based on a condition" },
+        { front:"else statement", back: "A control flow statement that executes code if the condition of an if statement is false" },
+        { front:"elif statement", back: "A control flow statement that executes code if the condition of an if statement is false and its own condition is true" },
         { front:"int", back: "A data type that represents whole numbers" },
         { front:"float", back: "A data type that represents decimal numbers" },
         { front:"string", back: "A data type that represents text" },
@@ -885,24 +1153,24 @@
         { front:"for", back: "A keyword that starts a for loop" },
         { front:"def", back: "A keyword that defines a function" },
         { front:"return", back: "A keyword that returns a value from a function" },
-        { front:"git_add", back:"A command to add changes to the staging area" },
-        { front:"git_commit", back: "A command to save changes to the local repository" },
-        { front:"git_push", back: "A command to push changes to a remote repository" },
-        { front:"git_pull", back: "A command to fetch and merge changes from a remote repository" },
-        { front:"git_clone", back: "A command to copy a repository from a remote server" },
-        { front:"peer_to_peer", back: "A network where each computer can act as a client or server" },
+        { front:"git add", back:"A command to add changes to the staging area" },
+        { front:"git commit", back: "A command to save changes to the local repository" },
+        { front:"git push", back: "A command to push changes to a remote repository" },
+        { front:"git pull", back: "A command to fetch and merge changes from a remote repository" },
+        { front:"git clone", back: "A command to copy a repository from a remote server" },
+        { front:"peer-to-peer", back: "A network where each computer can act as a client or server" },
         { front:"server", back: "A computer or software that provides services to other computers" },
         { front:"client", back: "A computer or software that requests services from a server" },
         { front:"cloud", back: "A network of remote servers hosted on the Internet to store, manage and process data" },
         { front:"database", back: "A structured set of data stored electronically" },
-        { front:"client_server", back: "A network architecture where clients request services from servers" },
-        { front:"web_server", back: "A server that hosts websites and web applications" },
-        { front:"link_layer", back: "Layer responsible for physical transmission of data between directly connected devices. This is managed by the network hardware." },
-        { front:"network_layer", back: "Layer responsible for routing data packets to their destination. This is managed by the operating system." },
-        { front:"transport_layer", back: "Layer responsible for end-to-end communication between devices. Apps are built on top of this layer." },
-        { front:"application_layer", back: "Layer responsible for providing network services to applications. This is managed by the application software." },
-        { front:"cascading_request", back: "A single webpage often requires multiple HTTP requests to load completely." },
-        { front:"HTTP_request", back: "A message sent from a client to a server to request a resource." },
+        { front:"client-server", back: "A network architecture where clients request services from servers" },
+        { front:"web server", back: "A server that hosts websites and web applications" },
+        { front:"link layer", back: "Layer responsible for physical transmission of data between directly connected devices. This is managed by the network hardware." },
+        { front:"network layer", back: "Layer responsible for routing data packets to their destination. This is managed by the operating system." },
+        { front:"transport layer", back: "Layer responsible for end-to-end communication between devices. Apps are built on top of this layer." },
+        { front:"application layer", back: "Layer responsible for providing network services to applications. This is managed by the application software." },
+        { front:"cascading request", back: "A single webpage often requires multiple HTTP requests to load completely." },
+        { front:"HTTP request", back: "A message sent from a client to a server to request a resource." },
         { front:"cd", back: "A command to change the current directory" },
         { front:"ls", back: "A command to list files and directories" },
         { front:"pwd", back: "A command to print the current working directory" },
@@ -913,8 +1181,8 @@
         { front:"cat", back: "A command to display the contents of a file" },
         { front:"touch", back: "A command to create an empty file" },
         { front:"cd..", back: "A command to move up one directory" },
-        { front:"insert_mode", back: "A mode in Vim that allows you to insert text" },
-        { front:"normal_mode", back: "The default mode in Vim for navigating and editing text" },
+        { front:"insert mode", back: "A mode in Vim that allows you to insert text" },
+        { front:"normal mode", back: "The default mode in Vim for navigating and editing text" },
         { front:"hjkl", back:"The keys used in Vim for navigation (left, down, up, right)" },
         { front:":wq", back:"A command in Vim to save and exit" },
         ];
