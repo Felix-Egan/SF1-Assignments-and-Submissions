@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Fun Python Challenges</title>
+    <title>Python Coding Challenges</title>
     <script src="https://cdn.jsdelivr.net/pyodide/v0.23.4/full/pyodide.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
+            background-color: #f5f5f5;
         }
         .problem {
             margin-bottom: 30px;
@@ -16,17 +18,21 @@
             border: 1px solid #ddd;
             border-radius: 5px;
             background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         .editor {
-            height: 500px;
+            height: 600px;
             margin: 15px 0;
             border: 1px solid #ccc;
+            border-radius: 4px;
         }
         .test-output {
-            background: #f5f5f5;
-            padding: 10px;
+            background: #f8f9fa;
+            padding: 15px;
             border-radius: 4px;
             white-space: pre-wrap;
+            margin-top: 15px;
+            border: 1px solid #e9ecef;
         }
         button {
             padding: 10px 20px;
@@ -36,57 +42,85 @@
             border: none;
             border-radius: 4px;
             cursor: pointer;
+            transition: background-color 0.3s;
         }
         button:hover {
             background: #45a049;
         }
-        .test-results {
-            margin: 10px;
-            padding: 15px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-
         .test-case {
             margin: 10px 0;
             padding: 10px;
-            border-left: 4px solid;
+            border-left: 5px solid;
             background-color: #f8f9fa;
         }
-
         .test-case.pass {
             border-left-color: #28a745;
         }
-
         .test-case.fail {
             border-left-color: #dc3545;
         }
-
         .error {
             color: #dc3545;
             font-family: monospace;
             margin: 5px 0;
         }
-
         .summary {
             margin-top: 15px;
             padding-top: 10px;
             border-top: 1px solid #ddd;
         }
-
-        .summary .passed {
-            color: #28a745;
+        .passed { color: #28a745; }
+        .failed { color: #dc3545; }
+        .test-results-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+            font-size: 14px;
         }
 
-        .summary .failed {
-            color: #dc3545;
+        .test-results-table th, 
+        .test-results-table td {
+            padding: 8px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        .test-results-table th {
+            background-color: #f5f5f5;
+            position: sticky;
+            top: 0;
+        }
+
+        .table-container {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .test-results-table tr.pass {
+            background-color: rgba(40, 167, 69, 0.1);
+        }
+
+        .test-results-table tr.fail {
+            background-color: rgba(220, 53, 69, 0.1);
+        }
+
+        .test-results-table td.truncate {
+            max-width: 200px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .test-results-table td.truncate:hover {
+            white-space: normal;
+            overflow: visible;
         }
     </style>
 </head>
 <body>
-    <h1>Fun Python Coding Challenges</h1>
+    <h1>Python Coding Challenges</h1>
     
-    <div class="problem" id="recipe-calculator">
+    <div class="problem">
         <h2>1. Recipe Calculator 🧑‍🍳</h2>
         <p>Help adjust recipe ingredients based on number of servings and convert between measurement units.</p>
         <div id="editor1" class="editor"></div>
@@ -94,7 +128,7 @@
         <div class="test-output" id="output1"></div>
     </div>
 
-    <div class="problem" id="text-emoji">
+    <div class="problem">
         <h2>2. Text Message Emoji Counter 📱</h2>
         <p>Analyze text messages to count emojis and calculate emoji density.</p>
         <div id="editor2" class="editor"></div>
@@ -102,7 +136,7 @@
         <div class="test-output" id="output2"></div>
     </div>
 
-    <div class="problem" id="daily-tasks">
+    <div class="problem">
         <h2>3. Daily Task Scheduler ✅</h2>
         <p>Help organize daily tasks by priority and time management.</p>
         <div id="editor3" class="editor"></div>
@@ -110,31 +144,28 @@
         <div class="test-output" id="output3"></div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"></script>
     <script>
-        // Initialize editors
+        // Initialize editors with default solutions
         const editors = {
             1: ace.edit("editor1"),
             2: ace.edit("editor2"),
             3: ace.edit("editor3")
         };
 
-        // Configure each editor
-        Object.values(editors).forEach(editor => {
-            editor.setTheme("ace/theme/monokai");
-            editor.session.setMode("ace/mode/python");
-            editor.setFontSize(14);
-        });
-
-        // Set initial code templates
-        editors[1].setValue(`def scale_recipe(ingredients, servings):
+        const defaultSolutions = {
+            1: `def scale_recipe(ingredients, servings):
     """
     Scale recipe ingredients based on desired servings.
     ingredients: list of [amount, unit, item]
     servings: int (desired number of servings)
     Returns: list of [scaled_amount, unit, item]
     """
-    pass
+    # Assuming original recipe is for 1 serving
+    scaled = []
+    for amount, unit, item in ingredients:
+        scaled_amount = amount * servings
+        scaled.append([scaled_amount, unit, item])
+    return scaled
 
 def convert_measurement(amount, from_unit, to_unit):
     """
@@ -144,15 +175,29 @@ def convert_measurement(amount, from_unit, to_unit):
     to_unit: str (cups, tbsp, tsp)
     Returns: float (converted amount)
     """
-    pass`);
+    # Conversion ratios
+    conversions = {
+        'cups': {'tbsp': 16, 'tsp': 48},
+        'tbsp': {'cups': 1/16, 'tsp': 3},
+        'tsp': {'cups': 1/48, 'tbsp': 1/3}
+    }
+    
+    if from_unit == to_unit:
+        return amount
+    
+    return amount * conversions[from_unit][to_unit]`,
 
-        editors[2].setValue(`def count_emojis(message):
+            2: `def count_emojis(message):
     """
     Count number of emojis in a message.
     message: str (text message with emojis)
     Returns: int (number of emojis)
     """
-    pass
+    import re
+    # Basic emoji pattern - this is simplified
+    emoji_pattern = r'[\U0001F300-\U0001F9FF]'
+    emojis = re.findall(emoji_pattern, message)
+    return len(emojis)
 
 def emoji_density(message):
     """
@@ -160,16 +205,21 @@ def emoji_density(message):
     message: str (text message with emojis)
     Returns: float (percentage between 0-100)
     """
-    pass`);
+    emoji_count = count_emojis(message)
+    total_chars = len(message)
+    if total_chars == 0:
+        return 0
+    return (emoji_count / total_chars) * 100`,
 
-        editors[3].setValue(`def estimate_duration(task, difficulty):
+            3: `def estimate_duration(task, difficulty):
     """
     Estimate time needed for a task.
     task: str (task description)
     difficulty: int (1-5 scale)
     Returns: int (minutes needed)
     """
-    pass
+    # Base duration of 30 minutes per difficulty level
+    return difficulty * 30
 
 def sort_tasks(tasks):
     """
@@ -177,7 +227,9 @@ def sort_tasks(tasks):
     tasks: list of [task, difficulty]
     Returns: list of [task, duration]
     """
-    pass
+    # Convert difficulty to duration and sort
+    task_durations = [[task, estimate_duration(task, diff)] for task, diff in tasks]
+    return sorted(task_durations, key=lambda x: x[1])
 
 def optimize_schedule(tasks, available_time):
     """
@@ -186,7 +238,24 @@ def optimize_schedule(tasks, available_time):
     available_time: int (minutes available)
     Returns: list of selected tasks
     """
-    pass`);
+    selected = []
+    remaining_time = available_time
+    
+    for task, duration in sorted(tasks, key=lambda x: x[1]):
+        if duration <= remaining_time:
+            selected.append([task, duration])
+            remaining_time -= duration
+    
+    return selected`
+        };
+
+        // Configure editors
+        Object.values(editors).forEach((editor, index) => {
+            editor.setTheme("ace/theme/crimson_editor");
+            editor.session.setMode("ace/mode/python");
+            editor.setFontSize(14);
+            editor.setValue(defaultSolutions[index + 1], -1);
+        });
 
         let pyodide = null;
 
@@ -199,287 +268,195 @@ def optimize_schedule(tasks, available_time):
             return pyodide;
         }
 
+        
+        async function testRecipeCalculator(pyodide) {
+            return await pyodide.runPython(`
+                import json
+                test_cases = []
+                
+                # Test scaling recipe
+                input_data = [[1, "cup", "flour"]], 2
+                result = scale_recipe(*input_data)
+                test_cases.append({
+                    "description": "Scale recipe for double servings",
+                    "input": input_data,
+                    "passed": result == [[2, "cup", "flour"]],
+                    "expected": [[2, "cup", "flour"]],
+                    "actual": result
+                })
+
+                # Test measurement conversion
+                input_data = 1, "cups", "tbsp"
+                result = convert_measurement(*input_data)
+                test_cases.append({
+                    "description": "Convert 1 cup to tablespoons",
+                    "input": input_data,
+                    "passed": result == 16,
+                    "expected": 16,
+                    "actual": result
+                })
+
+                json.dumps({"cases": test_cases})
+            `);
+        }
+
+        async function testEmojiCounter(pyodide) {
+            return await pyodide.runPython(`
+                import json
+                test_cases = []
+                
+                # Test emoji counting
+                input_data = "Hello 😊🌍"
+                result = count_emojis("Hello 😊🌍")
+                test_cases.append({
+                    "description": "Count emojis in message",
+                    "input": input_data,
+                    "passed": result == 2,
+                    "expected": 2,
+                    "actual": result
+                })
+
+                # Test emoji density
+                input_data = "Hello 😊🌍"
+                result = emoji_density("Hello 😊🌍")
+                test_cases.append({
+                    "description": "Calculate emoji density",
+                    "input": input_data,
+                    "passed": abs(result - 25) < 0.1,
+                    "expected": "~25%",
+                    "actual": f"{result:.1f}%"
+                })
+
+                json.dumps({"cases": test_cases})
+            `);
+        }
+
+        async function testTaskScheduler(pyodide) {
+            return await pyodide.runPython(`
+                import json
+                test_cases = []
+                
+                # Test duration estimation
+                input_data = "Write report", 3
+                result = estimate_duration("Write report", 3)
+                test_cases.append({
+                    "description": "Estimate task duration",
+                    input": input_data,
+                    "passed": result == 90,
+                    "expected": 90,
+                    "actual": result
+                })
+
+                # Test task sorting
+                input_data = [["Write report", 3], ["Quick email", 1]]
+                result = sort_tasks([["Write report", 3], ["Quick email", 1]])
+                test_cases.append({
+                    "description": "Sort tasks by duration",
+                    "input": input_data,
+                    "passed": result == [["Quick email", 30], ["Write report", 90]],
+                    "expected": [["Quick email", 30], ["Write report", 90]],
+                    "actual": result
+                })
+
+                # Test schedule optimization
+                input_data = [["Write report", 90], ["Quick email", 30]], 60
+                result = optimize_schedule([["Write report", 90], ["Quick email", 30]], 60)
+                test_cases.append({
+                    "description": "Optimize schedule within time limit",
+                    "input": input_data,
+                    "passed": result == [["Quick email", 30]],
+                    "expected": [["Quick email", 30]],
+                    "actual": result
+                })
+
+                json.dumps({"cases": test_cases})
+            `);
+        }
+
         async function runTests(problemNumber) {
-            // Move output declaration to top and add error checking
             const outputElement = document.getElementById(`output${problemNumber}`);
-            if (!outputElement) {
-                console.error(`Output element for problem ${problemNumber} not found`);
-                return;
-            }
+            outputElement.innerHTML = 'Initializing Python environment...';
 
             try {
+                const pyodide = await initPyodide();
                 const code = editors[problemNumber].getValue();
-                outputElement.innerHTML = 'Initializing Python environment...';
+                
+                // Execute the user's code
+                await pyodide.runPython(code);
 
-                // Add timeout to prevent infinite loading
-                const timeoutPromise = new Promise((_, reject) => 
-                    setTimeout(() => reject(new Error('Test execution timed out')), 10000)
-                );
+                // Run the appropriate test suite
+                let testResults;
+                switch(problemNumber) {
+                    case 1:
+                        testResults = await testRecipeCalculator(pyodide);
+                        break;
+                    case 2:
+                        testResults = await testEmojiCounter(pyodide);
+                        break;
+                    case 3:
+                        testResults = await testTaskScheduler(pyodide);
+                        break;
+                }
 
-                // Race between test execution and timeout
-                const testExecution = async () => {
-                    const pyodide = await loadPyodide({
-                        indexURL: "https://cdn.jsdelivr.net/pyodide/v0.23.4/full/",
-                        stdout: (text) => console.log(text),
-                        stderr: (text) => console.error(text)
-                    });
+                // Parse the JSON string returned from Python
+                testResults = JSON.parse(testResults);
 
-                    outputElement.innerHTML = 'Running tests...';
-                    
-                    // Clear any previous state
-                    await pyodide.runPython('import sys; sys.modules.clear()');
-                    
-                    // Run the user's code
-                    await pyodide.runPython(code);
-
-                    let testResults;
-                    switch(problemNumber) {
-                        case 1:
-                            testResults = await testRecipeCalculator(pyodide, code);
-                            break;
-                        case 2:
-                            testResults = await testEmojiCounter(pyodide, code);
-                            break;
-                        case 3:
-                            testResults = await testTaskScheduler(pyodide, code);
-                            break;
-                        default:
-                            throw new Error('Invalid problem number');
-                    }
-
-                    return testResults;
-                };
-
-                const testResults = await Promise.race([testExecution(), timeoutPromise]);
-                // Rest of your result display code using outputElement instead of output
                 outputElement.innerHTML = formatTestResults(testResults);
-
             } catch (error) {
-                outputElement.innerHTML = `<div class="error">
-                    <p>Error: ${error.message}</p>
-                    <p>Please check the console for more details.</p>
-                </div>`;
-                console.error('Test execution error:', error);
+                outputElement.innerHTML = `<div class="error">Error: ${error.message}</div>`;
+                console.error(error);
             }
-        }
-
-        async function testRecipeCalculator(pyodide, code) {
-            await pyodide.runPython(code);
-            return await pyodide.runPython(`
-                def test_recipe():
-                    cases = []
-                    try:
-                        # Test 1
-                        result = scale_recipe([[1, "cup", "flour"]], 2)
-                        cases.append({
-                            "description": "Scale recipe double servings",
-                            "passed": result == [[2, "cup", "flour"]],
-                            "expected": [[2, "cup", "flour"]],
-                            "actual": str(result),
-                            "error": None
-                        })
-                    except Exception as e:
-                        cases.append({
-                            "description": "Scale recipe double servings",
-                            "passed": False,
-                            "expected": [[2, "cup", "flour"]],
-                            "actual": "Error",
-                            "error": str(e)
-                        })
-
-                    try:
-                        # Test 2
-                        result = convert_measurement(1, "cups", "tbsp")
-                        cases.append({
-                            "description": "Convert cups to tablespoons",
-                            "passed": result == 16,
-                            "expected": 16,
-                            "actual": str(result),
-                            "error": None
-                        })
-                    except Exception as e:
-                        cases.append({
-                            "description": "Convert cups to tablespoons",
-                            "passed": False,
-                            "expected": 16,
-                            "actual": "Error",
-                            "error": str(e)
-                        })
-
-                    return {"cases": cases}
-                
-                test_recipe()
-            `);
-        }
-
-        async function testEmojiCounter(pyodide, code) {
-            await pyodide.runPython(code);
-            return await pyodide.runPython(`
-                def test_emojis():
-                    cases = []
-                    try:
-                        # Test 1
-                        result = count_emojis("Hello 😊🌍")
-                        cases.append({
-                            "description": "Count emojis in message",
-                            "passed": result == 2,
-                            "expected": 2,
-                            "actual": result,
-                            "error": None
-                        })
-                    except Exception as e:
-                        cases.append({
-                            "description": "Count emojis in message",
-                            "passed": False,
-                            "expected": 2,
-                            "actual": "Error",
-                            "error": str(e)
-                        })
-
-                    try:
-                        # Test 2
-                        result = emoji_density("Hello 😊🌍")
-                        cases.append({
-                            "description": "Calculate emoji density",
-                            "passed": result == 25,
-                            "expected": 25,
-                            "actual": result,
-                            "error": None
-                        })
-                    except Exception as e:
-                        cases.append({
-                            "description": "Calculate emoji density",
-                            "passed": False,
-                            "expected": 25,
-                            "actual": "Error",
-                            "error": str(e)
-                        })
-
-                    return {"cases": cases}
-                
-                test_emojis()
-            `);
         }
 
         function formatTestResults(results) {
-            // Validate results structure
-            if (!results) {
-                return `<div class="error">No test results received</div>`;
+            if (!results || !results.cases) {
+                return '<div class="error">Invalid test results</div>';
             }
 
-            // Handle Python dictionary conversion
-            let cases = [];
-            if (results.toJs) {
-                // Convert Pyodide proxy object to JavaScript
-                const jsResults = results.toJs();
-                cases = jsResults.cases || [];
-            } else {
-                cases = results.cases || [];
-            }
-
-            if (!Array.isArray(cases)) {
-                return `<div class="error">Invalid test results format</div>`;
-            }
-
-            let html = `<div class="test-results">
-                <h4>Test Results:</h4>`;
+            let html = '<div class="table-container"><table class="test-results-table">';
             
-            cases.forEach((testCase, index) => {
-                // Convert test case if needed
-                const tc = testCase.toJs ? testCase.toJs() : testCase;
+            // Add table header
+            html += `
+                <tr>
+                    <th>#</th>
+                    <th>Status</th>
+                    <th>Description</th>
+                    <th>Input</th>
+                    <th>Expected</th>
+                    <th>Actual</th>
+                </tr>
+            `;
+
+            // Add test cases
+            results.cases.forEach((test, index) => {
+                const statusClass = test.passed ? 'pass' : 'fail';
+                const icon = test.passed ? '✅' : '❌';
                 
-                const icon = tc.passed ? "✅" : "❌";
                 html += `
-                    <div class="test-case ${tc.passed ? 'pass' : 'fail'}">
-                        <p>${icon} Test ${index + 1}: ${tc.description}</p>
-                        ${tc.error ? `<p class="error">Error: ${tc.error}</p>` : ''}
-                        <p><strong>Expected:</strong> ${JSON.stringify(tc.expected)}</p>
-                        <p><strong>Got:</strong> ${tc.actual}</p>
-                    </div>
+                    <tr class="${statusClass}">
+                        <td>${index + 1}</td>
+                        <td>${icon}</td>
+                        <td class="truncate">${test.description}</td>
+                        <td class="truncate">${JSON.stringify(test.input)}</td>
+                        <td class="truncate">${JSON.stringify(test.expected)}</td>
+                        <td class="truncate">${JSON.stringify(test.actual)}</td>
+                    </tr>
                 `;
             });
 
-            const totalTests = cases.length;
-            const passedTests = cases.filter(t => (t.toJs ? t.toJs() : t).passed).length;
-            const failedTests = totalTests - passedTests;
+            html += '</table></div>';
 
+            // Add summary footer
+            const passedTests = results.cases.filter(t => t.passed).length;
             html += `
-                <div class="summary">
-                    <p>Total Tests: ${totalTests}</p>
-                    <p class="passed">Passed: ${passedTests}</p>
-                    <p class="failed">Failed: ${failedTests}</p>
+                <div class="summary" style="margin-top: 10px; font-weight: bold;">
+                    Total: ${results.cases.length}  
+                    <span class="passed">✅ ${passedTests}</span>  
+                    <span class="failed">❌ ${results.cases.length - passedTests}</span>
                 </div>
-            </div>`;
+            `;
 
             return html;
-        }
-
-        async function testTaskScheduler(pyodide, code) {
-            await pyodide.runPython(code);
-            return await pyodide.runPython(`
-                def test_tasks():
-                    cases = []
-                    try:
-                        # Test 1
-                        result = estimate_duration("Write report", 3)
-                        cases.append({
-                            "description": "Estimate duration for task",
-                            "passed": result == 90,
-                            "expected": 90,
-                            "actual": result,
-                            "error": None
-                        })
-                    except Exception as e:
-                        cases.append({
-                            "description": "Estimate duration for task",
-                            "passed": False,
-                            "expected": 90,
-                            "actual": "Error",
-                            "error": str(e)
-                        })
-
-                    try:
-                        # Test 2
-                        result = sort_tasks([["Write report", 3], ["Prepare presentation", 2]])
-                        cases.append({
-                            "description": "Sort tasks by duration",
-                            "passed": result == [["Prepare presentation", 60], ["Write report", 90]],
-                            "expected": [["Prepare presentation", 60], ["Write report", 90]],
-                            "actual": str(result),
-                            "error": None
-                        })
-                    except Exception as e:
-                        cases.append({
-                            "description": "Sort tasks by duration",
-                            "passed": False,
-                            "expected": [["Prepare presentation", 60], ["Write report", 90]],
-                            "actual": "Error",
-                            "error": str(e)
-                        })
-
-                    try:
-                        # Test 3
-                        result = optimize_schedule([["Write report", 90], ["Prepare presentation", 60]], 120)
-                        cases.append({
-                            "description": "Optimize schedule within time",
-                            "passed": result == [["Prepare presentation", 60]],
-                            "expected": [["Prepare presentation", 60]],
-                            "actual": str(result),
-                            "error": None
-                        })
-                    except Exception as e:
-                        cases.append({
-                            "description": "Optimize schedule within time",
-                            "passed": False,
-                            "expected": [["Prepare presentation", 60]],
-                            "actual": "Error",
-                            "error": str(e)
-                        })
-
-                    return {"cases": cases}
-                
-                test_tasks()
-            `);
         }
     </script>
 </body>
