@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Python Coding Challenges</title>
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.23.4/full/pyodide.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .problem {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .editor {
+            height: 670px;
+            margin: 15px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .test-output {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 4px;
+            white-space: pre-wrap;
+            margin-top: 15px;
+            border: 1px solid #e9ecef;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 10px 0;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        .test-case {
+            margin: 10px 0;
+            padding: 10px;
+            border-left: 5px solid;
+            background-color: #f8f9fa;
+        }
+        .test-case.pass {
+            border-left-color: #28a745;
+        }
+        .test-case.fail {
+            border-left-color: #dc3545;
+        }
+        .error {
+            color: #dc3545;
+            font-family: monospace;
+            margin: 5px 0;
+        }
+        .summary {
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid #ddd;
+        }
+        .passed { color: #28a745; }
+        .failed { color: #dc3545; }
+        .test-results-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+            font-size: 14px;
+        }
+
+        .test-results-table th, 
+        .test-results-table td {
+            padding: 8px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        .test-results-table th {
+            background-color: #f5f5f5;
+            position: sticky;
+            top: 0;
+        }
+
+        .table-container {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .test-results-table tr.pass {
+            background-color: rgba(40, 167, 69, 0.1);
+        }
+
+        .test-results-table tr.fail {
+            background-color: rgba(220, 53, 69, 0.1);
+        }
+
+        .test-results-table td.truncate {
+            max-width: 200px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .test-results-table td.truncate:hover {
+            white-space: normal;
+            overflow: visible;
+        }
+    </style>
+</head>
+<body>
+    <h1>Python Coding Challenges</h1>
+    
+    <div class="problem">
+        <h2>1. E-Commerce Order💲</h2>
+        <p>Calculate the final price for an E-Commerce order based on where it is being shipped. You will have to write 2 functions. The first takes in a list of tuples, which represent the items and their prices (and discounts, if any).
+        The second function takes in the list of items and the shipping address and calculates the total cost of the order including tax and delivery.</p>
+        <div id="editor1" class="editor"></div>
+        <button onclick="runTests(1)">Run Tests</button>
+        <div class="test-output" id="output1"></div>
+    </div>
+
+    <div class="problem">
+        <h2>2. Pizza Time! Pizzeria™️🍕</h2>
+        <p>Calculate the price of a pizza order from the world famous Pizza Time! Pizzaria™️. Your first function will require you to calculate the base price for a pizza depending on its size and topping count.
+        The second function will take in a list of pizzas and calculate the total cost of the order after applying any deals.
+        </p>
+        <div id="editor2" class="editor"></div>
+        <button onclick="runTests(2)">Run Tests</button>
+        <div class="test-output" id="output2"></div>
+    </div>
+
+    <div class="problem">
+        <h2>3. Ultimate Gamer 🎮</h2>
+        <p>Output the rank of a player based on their recent game sessions. The first function will calculate the points earned in a battle royale game session based on eliminations, survival time, and final placement.
+        The second function will update the player's rank based on their recent performance.</p>
+        <div id="editor3" class="editor"></div>
+        <button onclick="runTests(3)">Run Tests</button>
+        <div class="test-output" id="output3"></div>
+    </div>
+
+    <script>
+        // Initialize editors with default solutions
+        const editors = {
+            1: ace.edit("editor1"),
+            2: ace.edit("editor2"),
+            3: ace.edit("editor3")
+        };
+
+        const defaultSolutions = {
+            1: `def calculate_subtotal(items):
+
+    """
+    Calculate subtotal (sum) of an e-commerce order.
+    
+    Args:
+        items: List of tuples (price, quantity, discount)
+
+    Returns:   
+        float: Subtotal of order
+    """
+    # Start coding here...
+
+
+
+
+
+def process_checkout(items, shipping_address):
+
+    """
+    Process an e-commerce checkout with items and shipping address.
+    
+    Args:
+        items: List of tuples (price, quantity, discount)
+        shipping_address (str): Destination address
+
+    Returns:
+        float: Total cost of order including tax and delivery
+
+    Shipping addresses:
+        Montreal: 10 km, 14.975% tax
+        Toronto: 542 km, 13% tax
+        Vancouver: 4924 km, 12% tax
+        Edmonton: 3584 km, 5% tax
+        Charlottetown: 1149 km, 15% tax
+    """
+    addresses = [("Montreal", 10, 14.975), ("Toronto", 542, 13), ("Vancouver", 4924, 12), ("Edmonton", 3584, 5), ("Charlottetown", 1149, 15)]
+    # Start coding here...`,
+
+            2: `def calculate_pizza_price(size, toppings):
+    """
+    Calculate price of a single pizza.
+    
+    Args:
+        size (str): 'S', 'M', or 'L'
+        toppings (list): List of toppings
+        
+    Returns:
+        float: Price of pizza
+        
+    Base prices:
+    - Small: $8
+    - Medium: $10 
+    - Large: $12
+    Each topping: $1.50
+    """
+    # Start coding here...
+
+
+
+
+
+def calculate_order_total(pizzas):
+    """
+    Calculate total order cost with deals applied.
+    
+    Args:
+        pizzas: List of tuples (size, [toppings])
+        
+    Returns:
+        float: Total order cost after deals
+        
+    Deals:
+    - Order 2+ pizzas: 10% off
+    - Large pizza with 3+ toppings: $2 off
+    """     
+    # Start coding here...`,
+
+            3: `def calculate_session_points(kills, time_alive, position):
+    """
+    Calculate points earned in a battle royale game session.
+    
+    Args:
+        kills (int): Number of eliminations
+        time_alive (int): Survival time in minutes
+        position (int): Final placement (1-100)
+        
+    Returns:
+        int: Points earned this session
+        
+    Points system:
+    - Each kill: 50 points
+    - Every minute survived: 10 points
+    - Top 10 placement bonus: 300 points
+    - Victory bonus: 500 points
+    """
+    # Start coding here...
+
+
+
+
+def update_player_rank(current_rank, recent_sessions):
+    """
+    Update player rank based on recent game sessions.
+    
+    Args:
+        current_rank (str): Current rank ('Bronze' to 'Diamond')
+        recent_sessions: List of tuples (kills, time_alive, position)
+        
+    Returns:
+        str: New rank after calculating recent performance: "<old rank> => <new rank>"
+        
+    Ranks: Bronze (0-999), Silver (1000-1999),
+    Gold (2000-2999), Diamond (3000+)
+    """
+    # Start coding here...`
+        };
+
+        // Configure editors
+        Object.values(editors).forEach((editor, index) => {
+            editor.setTheme("ace/theme/dracula");
+            editor.session.setMode("ace/mode/python");
+            editor.setFontSize(14);
+            editor.setValue(defaultSolutions[index + 1], -1);
+        });
+
+        let pyodide = null;
+
+        async function initPyodide() {
+            if (!pyodide) {
+                pyodide = await loadPyodide({
+                    indexURL: "https://cdn.jsdelivr.net/pyodide/v0.23.4/full/"
+                });
+            }
+            return pyodide;
+        }
+
+        async function testEcommerceCalculator(pyodide) {
+            return await pyodide.runPython(`
+                import json
+                test_cases = []
+                
+                # Test 1: Vancouver maximum distance shipping with large order
+                input_data = ([(999.99, 5, 0.5), (499.99, 3, 0.25)], "Vancouver")
+                result = process_checkout(*input_data)
+                test_cases.append({
+                    "description": "Large order to furthest city with discounts",
+                    "input": input_data,
+                    "passed": abs(result - 4148.58) < 0.1,
+                    "expected": "~3391.62",
+                    "actual": f"{result:.2f}"
+                })
+
+                # Test 2: Minimum purchase with no discount
+                input_data = ([(0.01, 1, 0)], "Montreal")
+                result = process_checkout(*input_data)
+                test_cases.append({
+                    "description": "Minimum possible purchase",
+                    "input": input_data,
+                    "passed": abs(result - 0.19) < 0.1,
+                    "expected": "~0.19",
+                    "actual": f"{result:.2f}"
+                })
+
+                # Test 3: Another Casual Test
+                input_data = ([(50.00, 1, 0)], "Charlottetown")
+                result = process_checkout(*input_data)
+                test_cases.append({
+                    "description": "Casual test, realistic",
+                    "input": input_data,
+                    "passed": abs(result - 78.18) < 0.1,
+                    "expected": "~78.45",
+                    "actual": f"{result:.2f}"
+                })
+
+                # Test 4: High quantity, no discount
+                input_data = ([(1.00, 1000, 0)], "Edmonton")
+                result = process_checkout(*input_data)
+                test_cases.append({
+                    "description": "Bulk order with no discount",
+                    "input": input_data,
+                    "passed": abs(result - 1114.51) < 0.1,
+                    "expected": "~1114.51",
+                    "actual": f"{result:.2f}"
+                })
+
+                # Test 5: Multiple items with varying discounts
+                input_data = ([(100.00, 2, 0.1), (50.00, 3, 0.2), (75.00, 1, 0.5)], "Toronto")
+                result = process_checkout(*input_data)
+                test_cases.append({
+                    "description": "Complex order with mixed discounts",
+                    "input": input_data,
+                    "passed": abs(result - 391.13) < 0.1,
+                    "expected": "~283.81",
+                    "actual": f"{result:.2f}"
+                })
+
+                # Test 6: Casual Test with Random Values
+                input_data = ([(25.99, 2, 0.1), (10.00, 1, 0)], "Montreal")
+                result = process_checkout(*input_data)
+                test_cases.append({
+                    "description": "Another casual test with random values",
+                    "input": input_data,
+                    "passed": abs(result - 65.47) < 0.1,
+                    "expected": "~59.54",
+                    "actual": f"{result:.2f}"
+                })
+
+                json.dumps({"cases": test_cases})
+            `);
+        }
+
+        async function testPizzaCalculator(pyodide) {
+            return await pyodide.runPython(`
+                import json
+                test_cases = []
+                
+                # Test 1: Basic order with multiple deals
+                input_data = [('L', ['pepperoni', 'mushrooms', 'olives']), ('M', ['cheese'])]
+                result = calculate_order_total(input_data)
+                test_cases.append({
+                    "description": "Calculate pizza order with multiple deals",
+                    "input": input_data,
+                    "passed": result == 23.4,
+                    "expected": 23.4,
+                    "actual": result
+                })
+
+                # Test 2: Large order with many toppings
+                input_data = [
+                    ('L', ['pepperoni', 'mushrooms', 'olives', 'bacon', 'onions', 'peppers']),
+                    ('L', ['cheese', 'ham', 'pineapple', 'bacon']),
+                    ('L', ['mushrooms', 'olives', 'onions'])
+                ]
+                result = calculate_order_total(input_data)
+                test_cases.append({
+                    "description": "Large order with maximum toppings",
+                    "input": input_data,
+                    "passed": result == 44.55,
+                    "expected": 44.55,
+                    "actual": result
+                })
+
+                # Test 3: Single pizza no deals
+                input_data = [('S', ['cheese'])]
+                result = calculate_order_total(input_data)
+                test_cases.append({
+                    "description": "Single small pizza no deals",
+                    "input": input_data,
+                    "passed": result == 9.50,
+                    "expected": 9.50,
+                    "actual": result
+                })
+
+                # Test 4: Empty toppings
+                input_data = [('M', []), ('S', [])]
+                result = calculate_order_total(input_data)
+                test_cases.append({
+                    "description": "Multiple pizzas with no toppings",
+                    "input": input_data,
+                    "passed": result == 16.20,
+                    "expected": 16.20,
+                    "actual": result
+                })
+
+                # Test 5: Mixed sizes with deal threshold
+                input_data = [
+                    ('L', ['pepperoni', 'mushrooms', 'olives']),
+                    ('M', ['cheese', 'ham']),
+                    ('S', ['pepperoni'])
+                ]
+                result = calculate_order_total(input_data)
+                test_cases.append({
+                    "description": "Mixed sizes hitting all deal conditions",
+                    "input": input_data,
+                    "passed": result == 33.3,
+                    "expected": 33.3,
+                    "actual": result
+                })
+
+                # Test 6: Edge case with maximum possible order
+                input_data = [
+                    ('L', ['t1', 't2', 't3', 't4', 't5', 't6', 't7', 't8']),
+                    ('L', ['t1', 't2', 't3', 't4', 't5']),
+                    ('L', ['t1', 't2', 't3'])
+                ]
+                result = calculate_order_total(input_data)
+                test_cases.append({
+                    "description": "Maximum possible order with all deals",
+                    "input": input_data,
+                    "passed": result == 48.6,
+                    "expected": 48.6,
+                    "actual": result
+                })
+
+                json.dumps({"cases": test_cases})
+            `);
+        }
+
+        async function testGameRanking(pyodide) {
+            return await pyodide.runPython(`
+                import json
+                test_cases = []
+                
+                # Test 1: Baseline rank up case
+                input_data = ("Silver", [(5, 18, 3), (2, 12, 15), (8, 22, 1)])
+                result = update_player_rank(*input_data)
+                test_cases.append({
+                    "description": "Calculate new rank from game sessions",
+                    "input": input_data,
+                    "passed": result == "Silver => Bronze",
+                    "expected": "Silver => Bronze",
+                    "actual": result
+                })
+
+                # Test 2: Maximum possible points
+                input_data = ("Bronze", [(99, 45, 1), (99, 40, 1), (99, 42, 1)])
+                result = update_player_rank(*input_data)
+                test_cases.append({
+                    "description": "Maximum performance - high kills, wins, long survival",
+                    "input": input_data,
+                    "passed": result == "Bronze => Diamond",
+                    "expected": "Bronze => Diamond",
+                    "actual": result
+                })
+
+                # Test 3: Rank threshold edge case
+                input_data = ("Silver", [(13, 25, 5), (14, 25, 5), (13, 25, 5)])
+                result = update_player_rank(*input_data)
+                test_cases.append({
+                    "description": "Points exactly at Gold threshold",
+                    "input": input_data,
+                    "passed": result == "Silver => Silver",
+                    "expected": "Silver => Silver",
+                    "actual": result
+                })
+
+                # Test 4: Minimum values
+                input_data = ("Gold", [(0, 1, 100), (0, 1, 100), (0, 1, 100)])
+                result = update_player_rank(*input_data)
+                test_cases.append({
+                    "description": "Minimum possible performance",
+                    "input": input_data,
+                    "passed": result == "Gold => Bronze",
+                    "expected": "Gold => Bronze",
+                    "actual": result
+                })
+
+                # Test 5: Many sessions average
+                input_data = ("Silver", [(5, 15, 10), (4, 12, 15), (6, 18, 8), 
+                                        (3, 10, 20), (7, 20, 5), (2, 8, 25)])
+                result = update_player_rank(*input_data)
+                test_cases.append({
+                    "description": "Large number of sessions with varied performance",
+                    "input": input_data,
+                    "passed": result == "Silver => Bronze",
+                    "expected": "Silver => Bronze",
+                    "actual": result
+                })
+
+                # Test 6: Perfect consistency
+                input_data = ("Bronze", [(10, 20, 1), (10, 20, 1), (10, 20, 1), (10, 20, 1)])
+                result = update_player_rank(*input_data)
+                test_cases.append({
+                    "description": "Consistent high performance across sessions",
+                    "input": input_data,
+                    "passed": result == "Bronze => Silver",
+                    "expected": "Bronze => Silver",
+                    "actual": result
+                })
+
+                json.dumps({"cases": test_cases})
+            `);
+        }
+
+        async function runTests(problemNumber) {
+            const outputElement = document.getElementById(`output${problemNumber}`);
+            
+            // Clear previous results
+            outputElement.innerHTML = 'Initializing Python environment...';
+            
+            try {
+                // Initialize new Pyodide instance each time
+                self.pyodide = undefined;
+                const pyodide = await initPyodide();
+                
+                // Get fresh code from editor
+                const code = editors[problemNumber].getValue();
+                
+                // Clear previous Python state and execute new code
+                await pyodide.runPython('import sys; sys.modules.clear()');
+                await pyodide.runPython(code);
+
+                // Check if required functions exist
+                const functionCheck = await pyodide.runPython(`
+                    import json
+                    functions = {
+                        1: ['calculate_subtotal', 'process_checkout'],
+                        2: ['calculate_pizza_price', 'calculate_order_total'],
+                        3: ['calculate_session_points', 'update_player_rank']
+                    }
+                    
+                    missing = [f for f in functions[${problemNumber}] 
+                              if f not in globals() or not callable(globals()[f])]
+                    
+                    json.dumps(missing)
+                `);
+                
+                const missingFunctions = JSON.parse(functionCheck);
+                if (missingFunctions.length > 0) {
+                    throw new Error(`Missing or incomplete functions: ${missingFunctions.join(', ')}`);
+                }
+
+                // Run tests with fresh environment
+                let testResults;
+                switch(problemNumber) {
+                    case 1:
+                        testResults = await testEcommerceCalculator(pyodide);
+                        break;
+                    case 2:
+                        testResults = await testPizzaCalculator(pyodide);
+                        break;
+                    case 3:
+                        testResults = await testGameRanking(pyodide);
+                        break;
+                }
+
+                // Verify test results exist
+                if (!testResults) {
+                    throw new Error("Test results undefined - check function implementation");
+                }
+
+                // Parse and display fresh results
+                testResults = JSON.parse(testResults);
+                outputElement.innerHTML = formatTestResults(testResults);
+                
+            } catch (error) {
+                outputElement.innerHTML = `<div class="error">Error: ${error.message}</div>`;
+                console.error(error);
+            }
+        }
+
+        function formatTestResults(results) {
+            if (!results || !results.cases) {
+                return '<div class="error">Invalid test results</div>';
+            }
+
+            let html = '<div class="table-container"><table class="test-results-table">';
+            
+            // Add table header
+            html += `
+                <tr>
+                    <th>#</th>
+                    <th>Status</th>
+                    <th>Description</th>
+                    <th>Input</th>
+                    <th>Expected</th>
+                    <th>Actual</th>
+                </tr>
+            `;
+
+            // Add test cases
+            results.cases.forEach((test, index) => {
+                const statusClass = test.passed ? 'pass' : 'fail';
+                const icon = test.passed ? '✅' : '❌';
+                
+                html += `
+                    <tr class="${statusClass}">
+                        <td>${index + 1}</td>
+                        <td>${icon}</td>
+                        <td class="truncate">${test.description}</td>
+                        <td class="truncate">${JSON.stringify(test.input)}</td>
+                        <td class="truncate">${JSON.stringify(test.expected)}</td>
+                        <td class="truncate">${JSON.stringify(test.actual)}</td>
+                    </tr>
+                `;
+            });
+
+            html += '</table></div>';
+
+            // Add summary footer
+            const passedTests = results.cases.filter(t => t.passed).length;
+            html += `
+                <div class="summary" style="margin-top: 10px; font-weight: bold;">
+                    Total: ${results.cases.length}  
+                    <span class="passed">✅ ${passedTests}</span>  
+                    <span class="failed">❌ ${results.cases.length - passedTests}</span>
+                </div>
+            `;
+
+            return html;
+        }
+    </script>
+</body>
+</html>
