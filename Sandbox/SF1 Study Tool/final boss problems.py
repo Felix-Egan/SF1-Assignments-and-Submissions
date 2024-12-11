@@ -36,6 +36,8 @@ def process_checkout(items, shipping_address):
         Vancouver: 4924 km, 12% tax
         Edmonton: 3584 km, 5% tax
         Charlottetown: 1149 km, 15% tax
+
+    Delivery cost: 1.80$ per 100 km = 0.018$ per km
     """
     addresses = [("Montreal", 10, 14.975), ("Toronto", 542, 13), ("Vancouver", 4924, 12), ("Edmonton", 3584, 5), ("Charlottetown", 1149, 15)]
     subtotal = calculate_subtotal(items)
